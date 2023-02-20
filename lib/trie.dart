@@ -25,6 +25,25 @@ class Trie<T> {
   T? get(String name) {
     return _getNode(name)?.data;
   }
+
+  List<T> search(String searchTerm) {
+    List<T> list = [];
+    var node = _getNode(searchTerm);
+    if (node != null) {
+      _getChildren(node, list);
+    }
+    return list;
+  }
+
+  void _getChildren(TrieNode<T> node, List<T> list) {
+    var data = node.data;
+    if (data != null) {
+      list.add(data);
+    }
+    for (TrieNode<T> child in node.children.values) {
+      _getChildren(child, list);
+    }
+  }
 }
 
 class TrieNode<T> {
