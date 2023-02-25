@@ -14,13 +14,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
 
       // Pulls styling from styles.dart.
       theme: ThemeData(
         primarySwatch: Colors.grey,
         colorScheme: CustomStyle.pageScheme,
-        appBarTheme: CustomStyle.appBarTheme,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
       ),
 
       home: const ThoughtSortHome(title: 'ThoughtSort'),
