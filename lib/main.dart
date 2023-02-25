@@ -20,10 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
         colorScheme: CustomStyle.pageScheme,
-          appBarTheme: AppBarTheme(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
+        appBarTheme: CustomStyle.appBarTheme,
       ),
 
       home: const ThoughtSortHome(title: 'ThoughtSort'),
