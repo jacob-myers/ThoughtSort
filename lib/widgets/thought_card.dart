@@ -1,0 +1,1 @@
+// Widget that uses the Card class to display a thought.
