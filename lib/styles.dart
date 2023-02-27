@@ -18,7 +18,8 @@ class CustomStyle {
 
   static AppBarTheme appBarTheme = AppBarTheme(
     foregroundColor: pageScheme.primary,
-    backgroundColor: pageScheme.secondary,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
   );
 
   static TextStyle headers = TextStyle(
