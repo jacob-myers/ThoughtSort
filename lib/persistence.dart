@@ -25,7 +25,7 @@ Thought parseThought(String str) {
 List<Thought> loadThoughts(String filename) {
   var thoughts = [];
   var file = File(filename);
-  var contents = file.readAsStringSync();
+  var contents = file.readAsStringSync().trim();
   var lines = contents.split("\n");
   return lines.map(parseThought).toList();
 }
