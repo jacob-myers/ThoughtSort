@@ -35,3 +35,8 @@ void saveThoughts(String filename, List<Thought> thoughts) {
   var file = File(filename);
   file.writeAsStringSync(contents);
 }
+
+void appendThought(String filename, Thought thought) {
+  var file = File(filename);
+  file.writeAsStringSync("\n$thought", mode: FileMode.append);
+}
