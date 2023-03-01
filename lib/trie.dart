@@ -1,5 +1,5 @@
 class Trie<T> {
-  TrieNode<T> root = TrieNode(null);
+  TrieNode<T> root = TrieNode([]);
 
   TrieNode<T>? _getNode(String path) {
     TrieNode<T>? node = root;
@@ -17,13 +17,13 @@ class Trie<T> {
     TrieNode<T> node = root;
     for (int i = 0; i < name.length; i++) {
       var ch = name[i];
-      node = node.children.putIfAbsent(name.codeUnits[i], () => TrieNode(null));
+      node = node.children.putIfAbsent(name.codeUnits[i], () => TrieNode([]));
     }
-    node.data = data;
+    node.data.add(data);
   }
 
-  T? get(String name) {
-    return _getNode(name)?.data;
+  List<T> get(String name) {
+    return _getNode(name)?.data ?? [];
   }
 
   List<T> search(String searchTerm) {
@@ -37,9 +37,7 @@ class Trie<T> {
 
   void _getChildren(TrieNode<T> node, List<T> list) {
     var data = node.data;
-    if (data != null) {
-      list.add(data);
-    }
+    list.addAll(data);
     for (TrieNode<T> child in node.children.values) {
       _getChildren(child, list);
     }
@@ -47,7 +45,7 @@ class Trie<T> {
 }
 
 class TrieNode<T> {
-  T? data;
+  List<T> data;
   Map<int, TrieNode<T>> children = Map();
 
   TrieNode(this.data);
