@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:window_size/window_size.dart';
 
 // Widgets.
 import 'package:thought_sort/widgets/thought_entry.dart';
 import 'package:thought_sort/widgets/similar_thoughts.dart';
+import 'package:thought_sort/widgets/thought_card.dart';
 
 // Styles.
 import 'package:thought_sort/styles.dart';
+
+import '../persistence.dart';
+
 
 class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title});
@@ -28,6 +33,22 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     });
   }
 
+  late List<Thought> thoughts;
+  bool isThought = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    refreshThoughts();
+  }
+
+  Future refreshThoughts() async {
+    setState(() => isThought = true);
+    this.thoughts = loadThoughts("thoughts");
+    setState(() => isThought = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called.
@@ -46,7 +67,6 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
         child: Row(
           children: [
             // Column contains thought entry and similar thoughts.
-
             SizedBox(
               width: widget.thoughtEntryWidth,
               child: Column(
@@ -67,14 +87,34 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
             SizedBox(width: 20),
 
             Expanded(
-              child: Text(
-                'Thought library goes here',
-                textAlign: TextAlign.center,
-              ),
+              child: isThought
+                ? Text(
+                    'Thought library goes here',
+                    textAlign: TextAlign.center,
+                  ) : buildThoughts(),
             ),
           ],
         ),
       )
     );
   }
+
+  Widget buildThoughts() => StaggeredGridView.countBuilder(
+
+    padding: EdgeInsets.all(8),
+    itemCount: thoughts.length,
+    staggeredTileBuilder: (index) => StaggeredTile.fit(2),
+    crossAxisCount: 4,
+    mainAxisSpacing: 4,
+    crossAxisSpacing: 4,
+    itemBuilder: (context, index) {
+      final thought = thoughts[index];
+
+      return GestureDetector(
+        child: ThoughtCard(thought: thought, index: index),
+      );
+    },
+  );
+
+
 }
