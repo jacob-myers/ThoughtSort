@@ -12,10 +12,11 @@ class ThoughtSearch {
   Trie<Thought> index = Trie();
 
   ThoughtSearch(List<Thought> thoughts) {
-    for (var thought in thoughts) {
-      var words = thought.contents.split(wordSplit);
-      words.forEach((w) => index.insert(w, thought));
-    }
+    thoughts.forEach(addToIndex);
+  }
+
+  void addToIndex(Thought thought) {
+    thought.contents.split(wordSplit).forEach((w) => index.insert(w, thought));
   }
 
   List<Thought> search(String query) {
