@@ -60,7 +60,7 @@ class ThoughtFormWidget extends StatelessWidget {
   );
 
 
-
+  /*
   Widget buildContents() => TextField(
     controller: textFieldController,
 
@@ -83,6 +83,7 @@ class ThoughtFormWidget extends StatelessWidget {
       textFieldController.clear();
     },
   );
+  */
 
   Future addThought() async {
     List<Thought> thought = [Thought(id, DateTime.now(), contents)];
