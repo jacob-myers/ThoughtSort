@@ -2,14 +2,14 @@ import 'dart:io';
 
 class Thought {
   int id;
-  DateTime createdAt = DateTime.now();
+  DateTime date = DateTime.now();
   String contents;
 
-  Thought(this.id, this.createdAt, this.contents);
+  Thought(this.id, this.date, this.contents);
   Thought.now(this.id, this.contents);
 
   String toString() {
-    return "$id ${createdAt.millisecondsSinceEpoch} $contents";
+    return "$id ${date.millisecondsSinceEpoch} $contents";
   }
 }
 
