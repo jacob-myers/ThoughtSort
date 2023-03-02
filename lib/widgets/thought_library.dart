@@ -17,7 +17,7 @@ class ThoughtFormWidget extends StatelessWidget {
   const ThoughtFormWidget({
     Key? key,
     required this.textFieldController,
-    this.id = 1,
+    this.id = 0,
     this.contents = '',
     required this.onChangedId,
     required this.onChangedContents,
