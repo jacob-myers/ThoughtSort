@@ -52,8 +52,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   // This updates ThoughtLibrary.
   void addThought(int id, String strThought) {
     setState(() {
-      Thought thought = Thought(id, DateTime.now(), strThought);
-      appendThought('thoughts', thought);
+      appendThought('thoughts', Thought.now(id, strThought));
       refreshThoughts();
     });
   }
