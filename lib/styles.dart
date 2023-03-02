@@ -4,7 +4,7 @@ class CustomStyle {
 
   static ColorScheme pageScheme = ColorScheme(
     primary: Colors.grey,
-    secondary: Colors.black87,
+    secondary: Colors.black12,
     brightness: Brightness.dark,
     onPrimary: Colors.white70,
     onSecondary: Colors.white70,

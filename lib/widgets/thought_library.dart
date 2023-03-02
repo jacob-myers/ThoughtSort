@@ -2,90 +2,41 @@
 // Likely use the GridView or Listview class.
 
 // Widget that uses the Card class to display a thought.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:thought_sort/persistence.dart';
+import 'package:thought_sort/widgets/thought_card.dart';
 
-import '../persistence.dart';
+class ThoughtLibrary extends StatefulWidget {
+  final List<Thought> myThoughts;
 
-class ThoughtFormWidget extends StatelessWidget {
-  final TextEditingController textFieldController;
-  final int id;
-  final String contents;
-  final ValueChanged<int> onChangedId;
-  final ValueChanged<String> onChangedContents;
-
-  const ThoughtFormWidget({
-    Key? key,
-    required this.textFieldController,
-    this.id = 0,
-    this.contents = '',
-    required this.onChangedId,
-    required this.onChangedContents,
-
-  }) : super(key: key);
+  const ThoughtLibrary({
+    super.key,
+    required this.myThoughts,
+  });
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-    child: Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-          controller: textFieldController,
+  State<ThoughtLibrary> createState() => _ThoughtLibrary();
+}
 
-          keyboardType: TextInputType.text,
+class _ThoughtLibrary extends State<ThoughtLibrary> {
+  @override
+  Widget build(BuildContext context) {
+    return StaggeredGridView.countBuilder(
 
-          textInputAction: TextInputAction.done,
-          maxLines: null,
+      padding: EdgeInsets.all(8),
+      itemCount: widget.myThoughts.length,
+      staggeredTileBuilder: (index) => StaggeredTile.fit(2),
+      crossAxisCount: 4,
+      mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
+      itemBuilder: (context, index) {
+      final thought = widget.myThoughts[index];
 
-          // Styling.
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter a thought here...',
-          ),
-
-          // When Enter is pressed.
-          onChanged: onChangedContents,
-          onSubmitted: (String value) {
-            addThought();
-            // Clears the TextField.
-            textFieldController.clear();
-
-          },
-          ),
-        ],
-      ),
-    ),
-  );
-
-
-
-  Widget buildContents() => TextField(
-    controller: textFieldController,
-
-    keyboardType: TextInputType.text,
-
-    textInputAction: TextInputAction.done,
-    maxLines: null,
-
-    // Styling.
-    decoration: const InputDecoration(
-      border: OutlineInputBorder(),
-      hintText: 'Enter a thought here...',
-    ),
-
-    // When Enter is pressed.
-    onChanged: onChangedContents,
-    onSubmitted: (String value) {
-      addThought();
-      // Clears the TextField.
-      textFieldController.clear();
-    },
-  );
-
-  Future addThought() async {
-    List<Thought> thought = [Thought(id, DateTime.now(), contents)];
-    saveThoughts("thoughts", thought);
+      return GestureDetector(
+        child: ThoughtCard(thought: thought, index: index),
+      );
+      },
+    );
   }
 }

@@ -23,8 +23,10 @@ Thought parseThought(String str) {
 }
 
 List<Thought> loadThoughts(String filename) {
-  var thoughts = [];
   var file = File(filename);
+  if (!file.existsSync()) {
+    return [];
+  }
   var contents = file.readAsStringSync().trim();
   var lines = contents.split("\n");
   return lines.map(parseThought).toList();
@@ -33,5 +35,10 @@ List<Thought> loadThoughts(String filename) {
 void saveThoughts(String filename, List<Thought> thoughts) {
   var contents = thoughts.map((t) => t.toString()).join("\n");
   var file = File(filename);
-  file.writeAsStringSync(contents);
+  file.writeAsStringSync(contents, mode: FileMode.write);
+}
+
+void appendThought(String filename, Thought thought) {
+  var file = File(filename);
+  file.writeAsStringSync("\n$thought", mode: FileMode.append);
 }
