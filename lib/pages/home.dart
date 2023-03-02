@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thought_sort/search.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
 
@@ -12,7 +13,6 @@ import 'package:thought_sort/styles.dart';
 
 import '../persistence.dart';
 
-
 class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title});
 
@@ -25,7 +25,6 @@ class ThoughtSortHome extends StatefulWidget {
 }
 
 class _ThoughtSortHome extends State<ThoughtSortHome> {
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -34,6 +33,8 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   late List<Thought> thoughts;
+  late ThoughtSearch searchIndex;
+  String searchTerm = "";
   //bool isThought = false;
 
   @override
@@ -45,6 +46,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
 
   void refreshThoughts() {
     this.thoughts = loadThoughts("thoughts");
+    searchIndex = ThoughtSearch(thoughts);
   }
 
   // addThought is passed to ThoughtEntry, so that when a thought is added
@@ -52,8 +54,16 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   // This updates ThoughtLibrary.
   void addThought(int id, String strThought) {
     setState(() {
-      appendThought('thoughts', Thought.now(id, strThought));
+      var thought = Thought.now(id, strThought);
+      appendThought('thoughts', thought);
+      searchIndex.addToIndex(thought);
       refreshThoughts();
+    });
+  }
+
+  void updateSearch(String searchTerm) {
+    setState(() {
+      this.searchTerm = searchTerm;
     });
   }
 
@@ -65,45 +75,48 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     setWindowTitle(widget.title);
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
-
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Row(
-          children: [
-            // Column contains thought entry and similar thoughts.
-            SizedBox(
-              width: widget.thoughtEntryWidth,
-              child: Column(
-                children: [
-                  // Widget for text entry.
-                  ThoughtEntry(addThought: addThought),
-
-                  // Separator
-                  SizedBox(height: 10),
-
-                  // Widget for similar thoughts section.
-                  SimilarThoughts(myThoughts: this.thoughts),
-                ],
-              ),
-            ),
-
-            // 20px of space between thought entry/similar thoughts and thought library.
-            SizedBox(width: 20),
-
-            Expanded(
-              child: thoughts.isEmpty ? Text(
-                'My mind is empty.',
-                textAlign: TextAlign.center,
-              ) :
-              ThoughtLibrary(myThoughts: this.thoughts),
-            ),
-          ],
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(widget.title),
         ),
-      )
-    );
+        body: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              // Column contains thought entry and similar thoughts.
+              SizedBox(
+                width: widget.thoughtEntryWidth,
+                child: Column(
+                  children: [
+                    // Widget for text entry.
+                    ThoughtEntry(
+                        addThought: addThought, updateSearch: updateSearch),
+
+                    // Separator
+                    SizedBox(height: 10),
+
+                    // Widget for similar thoughts section.
+                    SimilarThoughts(
+                        thoughts: searchTerm.isEmpty
+                            ? []
+                            : searchIndex.search(searchTerm)),
+                  ],
+                ),
+              ),
+
+              // 20px of space between thought entry/similar thoughts and thought library.
+              SizedBox(width: 20),
+
+              Expanded(
+                child: thoughts.isEmpty
+                    ? Text(
+                        'My mind is empty.',
+                        textAlign: TextAlign.center,
+                      )
+                    : ThoughtLibrary(myThoughts: this.thoughts),
+              ),
+            ],
+          ),
+        ));
   }
 }

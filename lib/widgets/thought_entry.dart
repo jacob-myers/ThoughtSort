@@ -5,12 +5,13 @@ import '../persistence.dart';
 class ThoughtEntry extends StatefulWidget {
   final Thought? thought;
   final Function(int, String) addThought;
+  final Function(String) updateSearch;
 
-  ThoughtEntry({
-    super.key,
-    this.thought,
-    required this.addThought
-  });
+  ThoughtEntry(
+      {super.key,
+      this.thought,
+      required this.addThought,
+      required this.updateSearch});
 
   @override
   State<ThoughtEntry> createState() => _ThoughtEntry();
@@ -54,7 +55,9 @@ class _ThoughtEntry extends State<ThoughtEntry> {
                 widget.addThought(id, value);
                 // Clears the TextField.
                 textFieldController.clear();
+                widget.updateSearch("");
               },
+              onChanged: widget.updateSearch,
             ),
           ],
         ),
