@@ -57,7 +57,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
       var thought = Thought.now(id, strThought);
       appendThought('thoughts', thought);
       searchIndex.addToIndex(thought);
-      refreshThoughts();
+      thoughts.add(thought);
     });
   }
 
