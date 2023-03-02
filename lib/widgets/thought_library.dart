@@ -31,11 +31,11 @@ class _ThoughtLibrary extends State<ThoughtLibrary> {
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
       itemBuilder: (context, index) {
-      final thought = widget.myThoughts[index];
+        final thought = widget.myThoughts[index];
 
-      return GestureDetector(
-        child: ThoughtCard(thought: thought, index: index),
-      );
+        return GestureDetector(
+          child: ThoughtCard(thought: thought, index: index),
+        );
       },
     );
   }
