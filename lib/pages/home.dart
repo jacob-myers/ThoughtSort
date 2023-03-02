@@ -34,17 +34,18 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   late List<Thought> thoughts;
-  //bool isThought = false;
+  bool isThought = false;
 
   @override
   void initState() {
     super.initState();
-
     refreshThoughts();
   }
 
-  void refreshThoughts() {
+  Future refreshThoughts() async {
+    setState(() => isThought = true);
     this.thoughts = loadThoughts("thoughts");
+    setState(() => isThought = false);
   }
 
   // addThought is passed to ThoughtEntry, so that when a thought is added
@@ -96,7 +97,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
             SizedBox(width: 20),
 
             Expanded(
-              child: thoughts.isEmpty ? Text(
+              child: isThought ? Text(
                 'My mind is empty.',
                 textAlign: TextAlign.center,
               ) :
