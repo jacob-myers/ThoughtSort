@@ -86,7 +86,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                   SizedBox(height: 10),
 
                   // Widget for similar thoughts section.
-                  SimilarThoughts(),
+                  SimilarThoughts(myThoughts: this.thoughts),
                 ],
               ),
             ),
