@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
 
 // Widgets.
@@ -34,7 +35,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   late List<Thought> thoughts;
-  bool isThought = false;
+  //bool isThought = false;
 
   @override
   void initState() {
@@ -43,10 +44,19 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     refreshThoughts();
   }
 
-  Future refreshThoughts() async {
-    setState(() => isThought = true);
+  void refreshThoughts() {
     this.thoughts = loadThoughts("thoughts");
-    setState(() => isThought = false);
+  }
+
+  // addThought is passed to ThoughtEntry, so that when a thought is added
+  // in ThoughtEntry, setState performs a rebuild check on the whole body.
+  // This updates ThoughtLibrary.
+  void addThought(int id, String strThought) {
+    setState(() {
+      Thought thought = Thought(id, DateTime.now(), strThought);
+      appendThought('thoughts', thought);
+      refreshThoughts();
+    });
   }
 
   @override
@@ -72,7 +82,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
               child: Column(
                 children: [
                   // Widget for text entry.
-                  ThoughtEntry(),
+                  ThoughtEntry(addThought: addThought),
 
                   // Separator
                   SizedBox(height: 10),
@@ -87,34 +97,15 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
             SizedBox(width: 20),
 
             Expanded(
-              child: isThought
-                ? Text(
-                    'Thought library goes here',
-                    textAlign: TextAlign.center,
-                  ) : buildThoughts(),
+              child: thoughts.isEmpty ? Text(
+                'My mind is empty.',
+                textAlign: TextAlign.center,
+              ) :
+              ThoughtLibrary(myThoughts: this.thoughts),
             ),
           ],
         ),
       )
     );
   }
-
-  Widget buildThoughts() => StaggeredGridView.countBuilder(
-
-    padding: EdgeInsets.all(8),
-    itemCount: thoughts.length,
-    staggeredTileBuilder: (index) => StaggeredTile.fit(2),
-    crossAxisCount: 4,
-    mainAxisSpacing: 4,
-    crossAxisSpacing: 4,
-    itemBuilder: (context, index) {
-      final thought = thoughts[index];
-
-      return GestureDetector(
-        child: ThoughtCard(thought: thought, index: index),
-      );
-    },
-  );
-
-
 }
