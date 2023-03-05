@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:thought_sort/search.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 // Widgets.
 import 'package:thought_sort/widgets/thought_entry.dart';
 import 'package:thought_sort/widgets/similar_thoughts.dart';
-import 'package:thought_sort/widgets/thought_card.dart';
-
-// Styles.
-import 'package:thought_sort/styles.dart';
 
 import '../persistence.dart';
 
@@ -75,48 +72,81 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     setWindowTitle(widget.title);
 
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(widget.title),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Row(
-            children: [
-              // Column contains thought entry and similar thoughts.
-              SizedBox(
-                width: widget.thoughtEntryWidth,
-                child: Column(
-                  children: [
-                    // Widget for text entry.
-                    ThoughtEntry(
-                        addThought: addThought, updateSearch: updateSearch),
+      body: Column(
+        children: [
+          Expanded (
+            child: Column (
+              children: [
 
-                    // Separator
-                    SizedBox(height: 10),
+                WindowTitleBarBox(
+                  child: Container(
+                    color: Colors.black12,
+                    child: Row(
+                      children: [
+                        Text(widget.title, textAlign: TextAlign.center,),
+                        Expanded(
+                          child: MoveWindow(),
+                        ),
+                        WindowButtons()
 
-                    // Widget for similar thoughts section.
-                    SimilarThoughts(
-                        thoughts: searchTerm.isEmpty
-                            ? []
-                            : searchIndex.search(searchTerm)),
-                  ],
+
+
+                      ],
+                    )
+                  ),
                 ),
-              ),
 
-              // 20px of space between thought entry/similar thoughts and thought library.
-              SizedBox(width: 20),
+                Expanded(child:
+                  SizedBox(
+                    width: widget.thoughtEntryWidth,
+                    child: Column(
+                      children: [
+                        // Widget for text entry.
+                        ThoughtEntry(
+                            addThought: addThought, updateSearch: updateSearch),
 
-              Expanded(
-                child: thoughts.isEmpty
-                    ? Text(
-                        'My mind is empty.',
-                        textAlign: TextAlign.center,
-                      )
-                    : ThoughtLibrary(myThoughts: this.thoughts),
-              ),
-            ],
+                        // Separator
+                        SizedBox(height: 10),
+
+                        // Widget for similar thoughts section.
+                        SimilarThoughts(
+                            thoughts: searchTerm.isEmpty
+                                ? []
+                                : searchIndex.search(searchTerm)),
+                      ],
+                    ),
+                  ),
+                ),
+                // 20px of space between thought entry/similar thoughts and thought library.
+                //SizedBox(width: 20),
+
+
+                Expanded(
+                  child: thoughts.isEmpty
+                      ? Text(
+                    'My mind is empty.',
+                    textAlign: TextAlign.center,
+                  )
+                      : ThoughtLibrary(myThoughts: this.thoughts),
+                ),
+              ],
+            )
           ),
-        ));
+        ],
+      )
+    );
+  }
+}
+
+class WindowButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        MinimizeWindowButton(),
+        MaximizeWindowButton(),
+        CloseWindowButton()
+      ],
+    );
   }
 }
