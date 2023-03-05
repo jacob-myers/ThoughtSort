@@ -19,6 +19,7 @@ class ThoughtEntry extends StatefulWidget {
 
 class _ThoughtEntry extends State<ThoughtEntry> {
   final textFieldController = TextEditingController();
+  FocusNode focusNode = FocusNode();
   int id = 0;
   late String contents;
   late DateTime date;
@@ -40,6 +41,7 @@ class _ThoughtEntry extends State<ThoughtEntry> {
               controller: textFieldController,
 
               keyboardType: TextInputType.text,
+              focusNode: focusNode,
 
               textInputAction: TextInputAction.done,
               maxLines: null,
@@ -56,6 +58,7 @@ class _ThoughtEntry extends State<ThoughtEntry> {
                 // Clears the TextField.
                 textFieldController.clear();
                 widget.updateSearch("");
+                focusNode.requestFocus();
               },
               onChanged: widget.updateSearch,
             ),
