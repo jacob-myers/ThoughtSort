@@ -42,3 +42,9 @@ void appendThought(String filename, Thought thought) {
   var file = File(filename);
   file.writeAsStringSync("\n$thought", mode: FileMode.append);
 }
+
+void removeThought(String filename, Thought thought) {
+  var thoughts = loadThoughts(filename);
+  thoughts.remove(thought);
+  saveThoughts(filename, thoughts);
+}

@@ -22,6 +22,10 @@ class Trie<T> {
     node.data.add(data);
   }
 
+  void remove(String name, T data) {
+    _getNode(name)?.data.remove(data);
+  }
+
   List<T> get(String name) {
     return _getNode(name)?.data ?? [];
   }
