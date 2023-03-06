@@ -23,6 +23,10 @@ class ThoughtSearch {
     thought.contents.split(wordSplit).forEach((w) => index.remove(w, thought));
   }
 
+  void clear() {
+    index = Trie();
+  }
+
   List<Thought> search(String query) {
     return query
         .split(wordSplit)
