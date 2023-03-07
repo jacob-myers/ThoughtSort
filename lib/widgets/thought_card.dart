@@ -1,6 +1,7 @@
 // Widget that uses the Card class to display a thought.
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:thought_sort/styles.dart';
 
 import '../persistence.dart';
 //import 'package:sqflite_database_example/model/note.dart';
@@ -34,57 +35,119 @@ final _lightColors = [
   begin: Alignment.topCenter, end: Alignment.bottomCenter),
 ];
 
-class ThoughtCard extends StatelessWidget {
+class ThoughtCard extends StatefulWidget {
+  final Thought thought;
+  final int index;
+
   ThoughtCard({
     Key? key,
     required this.thought,
     required this.index,
   }) : super(key: key);
 
-  final Thought thought;
-  final int index;
+  @override
+  State<ThoughtCard> createState() => _ThoughtCard();
+}
+
+class _ThoughtCard extends State<ThoughtCard> {
+  final textFieldController = TextEditingController();
+  FocusNode focusNode = FocusNode();
+  bool beingEdited = false;
+
+  // Edit thought.
+  void submitThoughtEdit(String str) {
+    setState(() {
+      beingEdited = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     /// Pick colors from the accent colors based on index
-    final gradient = _lightColors[index % _lightColors.length];
-    final time = DateFormat.yMMMd().format(thought.date);
-    final minHeight = getMinHeight(index);
+    final gradient = _lightColors[widget.index % _lightColors.length];
+    final time = DateFormat.yMMMd().format(widget.thought.date);
+    final minHeight = getMinHeight(widget.index);
 
     return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black,
-              blurRadius: 4,
-              offset: Offset(2, 2),
+      child: GestureDetector(
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 4,
+                  offset: Offset(2, 2),
+                ),
+              ],
             ),
-          ],
+            constraints: BoxConstraints(minHeight: minHeight),
+            padding: EdgeInsets.all(8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                Text(
+                  time,
+                  style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                ),
+
+                SizedBox(height: 4),
+
+                buildCardText(beingEdited),
+
+              ],
+            ),
+          ),
         ),
-        constraints: BoxConstraints(minHeight: minHeight),
-        padding: EdgeInsets.all(8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              time,
-              style: TextStyle(color: Colors.black.withOpacity(0.5)),
-            ),
-            SizedBox(height: 4),
-            Text(
-              thought.contents,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        onTap: () {
+          setState(() {
+            beingEdited = true;
+            focusNode.requestFocus();
+          });
+        }
+      ),
+    );
+  }
+
+  Widget buildCardText(bool beingEdited) {
+    if (beingEdited) {
+      return TextField(
+        style: CustomStyle.cardEditText,
+        controller: TextEditingController(text: widget.thought.contents),
+        focusNode: focusNode,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.done,
+        maxLines: null,
+
+        // Styling.
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black, width: 2)
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2)
+          ),
+
+          hintText: 'Make a new thought?',
         ),
+
+        // When Enter is pressed.
+        onSubmitted: (String value) {
+          submitThoughtEdit(value);
+        },
+      );
+    }
+    return Text(
+      widget.thought.contents,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

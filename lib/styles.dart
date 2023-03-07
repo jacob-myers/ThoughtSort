@@ -27,5 +27,10 @@ class CustomStyle {
     color: pageScheme.onPrimary,
   );
 
+  static TextStyle cardEditText = TextStyle(
+    fontSize: 20,
+    color: Colors.black,
+    fontWeight: FontWeight.bold,
+  );
 
 }

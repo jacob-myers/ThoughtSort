@@ -20,41 +20,44 @@ class _SimilarThoughts extends State<SimilarThoughts> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        child: Column(
-      children: [
-        Text('Similar thoughts', style: CustomStyle.headers),
-        Expanded(
-            child: ListView(
-          children: List.generate(widget.thoughts.length, (index) {
+        child: StaggeredGridView.countBuilder(
+
+          padding: EdgeInsets.all(8),
+          itemCount: widget.thoughts.length,
+          staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+          crossAxisCount: 2,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+          itemBuilder: (context, index) {
+            final thought = widget.thoughts[index];
+
             return GestureDetector(
-                child:
-                    ThoughtCard(thought: widget.thoughts[index], index: index));
-          }),
-        ))
+              child: ThoughtCard(thought: thought, index: index),
+            );
+          },
+        )
+    );
 
-        /*
-          // Potential implementation as a grid, if we want to have it like that.
-          Leaving this functioning code here for now.
+
+    /*
+    // Old method with ListView.
+    Expanded(
+      child: Column(
+        children: [
+          Text('Similar thoughts', style: CustomStyle.headers),
           Expanded(
-              child: StaggeredGridView.countBuilder(
-
-                padding: EdgeInsets.all(8),
-                itemCount: widget.myThoughts.length,
-                staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                crossAxisCount: 1,
-                mainAxisSpacing: 4,
-                crossAxisSpacing: 4,
-                itemBuilder: (context, index) {
-                  final thought = widget.myThoughts[index];
-
+              child: ListView(
+                children: List.generate(widget.thoughts.length, (index) {
                   return GestureDetector(
-                    child: ThoughtCard(thought: thought, index: index),
-                  );
-                },
-              )
+                      child:
+                          ThoughtCard(thought: widget.thoughts[index], index: index));
+                }
+              ),
+            )
           )
-          */
-      ],
-    ));
+        ],
+      )
+    );
+    */
   }
 }
