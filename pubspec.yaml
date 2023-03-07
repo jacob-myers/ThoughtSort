@@ -43,7 +43,8 @@ dependencies:
       path: plugins/window_size
       ref: fd519be1e8398c6b6c2062c2447bac960a71bc02
   intl: ^0.18.0
-  flutter_staggered_grid_view: ^0.4.0-nullsafety.3
+  flutter_staggered_grid_view: ^0.4.1
+  bitsdojo_window: ^0.1.5
 
 dev_dependencies:
   flutter_test:
