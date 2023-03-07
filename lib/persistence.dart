@@ -43,6 +43,14 @@ void appendThought(String filename, Thought thought) {
   file.writeAsStringSync("\n$thought", mode: FileMode.append);
 }
 
+void editThought(String filename, Thought thought, String contents) {
+  var thoughts = loadThoughts(filename);
+  var index = thoughts.indexOf(thought);
+  thought.contents = contents;
+  thoughts[index] = thought;
+  saveThoughts(filename, thoughts);
+}
+
 void removeThought(String filename, Thought thought) {
   var thoughts = loadThoughts(filename);
   thoughts.remove(thought);
