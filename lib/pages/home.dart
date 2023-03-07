@@ -83,14 +83,10 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                     color: Colors.black12,
                     child: Row(
                       children: [
-                        Text(widget.title, textAlign: TextAlign.center,),
-                        Expanded(
-                          child: MoveWindow(),
-                        ),
+                        SizedBox(width: 8),
+                        Text(widget.title),
+                        Expanded(child: MoveWindow(),),
                         WindowButtons()
-
-
-
                       ],
                     )
                   ),
@@ -110,9 +106,9 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
 
                         // Widget for similar thoughts section.
                         SimilarThoughts(
-                            thoughts: searchTerm.isEmpty
-                                ? []
-                                : searchIndex.search(searchTerm)),
+                          thoughts: searchTerm.isEmpty
+                            ? []
+                            : searchIndex.search(searchTerm)),
                       ],
                     ),
                   ),
