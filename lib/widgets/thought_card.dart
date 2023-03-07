@@ -38,11 +38,13 @@ final _lightColors = [
 class ThoughtCard extends StatefulWidget {
   final Thought thought;
   final int index;
+  final Function(Thought, String) submitThoughtEdit;
 
   ThoughtCard({
     Key? key,
     required this.thought,
     required this.index,
+    required this.submitThoughtEdit,
   }) : super(key: key);
 
   @override
@@ -53,13 +55,6 @@ class _ThoughtCard extends State<ThoughtCard> {
   final textFieldController = TextEditingController();
   FocusNode focusNode = FocusNode();
   bool beingEdited = false;
-
-  // Edit thought.
-  void submitThoughtEdit(String str) {
-    setState(() {
-      beingEdited = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +133,9 @@ class _ThoughtCard extends State<ThoughtCard> {
 
         // When Enter is pressed.
         onSubmitted: (String value) {
-          submitThoughtEdit(value);
+          beingEdited = false;
+          editThought('thoughts', widget.thought, value);
+          //widget.submitThoughtEdit(widget.thought, value);
         },
       );
     }

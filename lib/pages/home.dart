@@ -14,8 +14,7 @@ class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title});
 
   final String title;
-  // Width of the entry column (in px).
-  final double thoughtEntryWidth = 300.0;
+  final String saveFile = 'thoughts';
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
@@ -42,7 +41,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   void refreshThoughts() {
-    this.thoughts = loadThoughts("thoughts");
+    this.thoughts = loadThoughts(widget.saveFile);
     searchIndex = ThoughtSearch(thoughts);
   }
 
@@ -52,9 +51,15 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   void addThought(int id, String strThought) {
     setState(() {
       var thought = Thought.now(id, strThought);
-      appendThought('thoughts', thought);
+      appendThought(widget.saveFile, thought);
       searchIndex.addToIndex(thought);
       thoughts.add(thought);
+    });
+  }
+
+  void submitThoughtEdit(Thought thought, String newStr) {
+    setState(() {
+      editThought(widget.saveFile, thought, newStr);
     });
   }
 
@@ -107,8 +112,8 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                 children: [
                   // Widget for text entry.
                   ThoughtEntry(
-                      addThought: addThought,
-                      updateSearch: updateSearch
+                    addThought: addThought,
+                    updateSearch: updateSearch
                   ),
 
                   // Separator
@@ -116,7 +121,9 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
 
                   // Widget for similar thoughts section.
                   SimilarThoughts(
-                      thoughts: searchIndex.search(searchTerm)),
+                    thoughts: searchIndex.search(searchTerm),
+                    submitThoughtEdit: submitThoughtEdit,
+                  ),
                 ],
               ),
             ),

@@ -9,8 +9,13 @@ import 'package:thought_sort/widgets/thought_card.dart';
 // Likely use the GridView or Listview class.
 class SimilarThoughts extends StatefulWidget {
   final List<Thought> thoughts;
+  final Function(Thought, String) submitThoughtEdit;
 
-  SimilarThoughts({super.key, required this.thoughts});
+  SimilarThoughts({
+    super.key,
+    required this.thoughts,
+    required this.submitThoughtEdit,
+  });
 
   @override
   State<SimilarThoughts> createState() => _SimilarThoughts();
@@ -32,7 +37,7 @@ class _SimilarThoughts extends State<SimilarThoughts> {
             final thought = widget.thoughts[index];
 
             return GestureDetector(
-              child: ThoughtCard(thought: thought, index: index),
+              child: ThoughtCard(thought: thought, index: index, submitThoughtEdit: widget.submitThoughtEdit,),
             );
           },
         )
