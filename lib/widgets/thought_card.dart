@@ -44,6 +44,7 @@ final _lightColors = [
 class ThoughtCard extends StatefulWidget {
   final Thought thought;
   final int index;
+  String? thoughtText;
   final Function(Thought, String) submitThoughtEdit;
 
   ThoughtCard({
@@ -113,30 +114,40 @@ class _ThoughtCard extends State<ThoughtCard> {
   Widget buildCardText(bool beingEdited) {
     if (beingEdited) {
       //print('rebuilding');
-      return TextField(
-        style: CustomStyle.cardEditText,
-        controller: TextEditingController(text: widget.thought.contents),
-        focusNode: focusNode,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-        maxLines: null,
-
-        // Styling.
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent, width: 2)),
-          hintText: 'Make a new thought?',
-        ),
-
-        // When Enter is pressed.
-        onSubmitted: (String value) {
-          setState(() {
+      return Focus(
+        onFocusChange: (value) {
+          if (!value) {
             this.beingEdited = false;
-            widget.submitThoughtEdit(widget.thought, value);
-          });
+            widget.submitThoughtEdit(
+                widget.thought, widget.thoughtText ?? widget.thought.contents);
+          }
         },
+        child: TextField(
+          style: CustomStyle.cardEditText,
+          controller: TextEditingController(text: widget.thought.contents),
+          focusNode: focusNode,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          maxLines: null,
+          onChanged: (value) => widget.thoughtText = value,
+
+          // Styling.
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent, width: 2)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent, width: 2)),
+            hintText: 'Make a new thought?',
+          ),
+
+          // When Enter is pressed.
+          onSubmitted: (String value) {
+            setState(() {
+              this.beingEdited = false;
+              widget.submitThoughtEdit(widget.thought, value);
+            });
+          },
+        ),
       );
     }
     return Text(
