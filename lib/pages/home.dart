@@ -14,8 +14,7 @@ class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title});
 
   final String title;
-  // Width of the entry column (in px).
-  final double thoughtEntryWidth = 300.0;
+  final String saveFile = 'thoughts';
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
@@ -42,7 +41,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   void refreshThoughts() {
-    this.thoughts = loadThoughts("thoughts");
+    this.thoughts = loadThoughts(widget.saveFile);
     searchIndex = ThoughtSearch(thoughts);
   }
 
@@ -52,9 +51,16 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   void addThought(int id, String strThought) {
     setState(() {
       var thought = Thought.now(id, strThought);
-      appendThought('thoughts', thought);
+      appendThought(widget.saveFile, thought);
       searchIndex.addToIndex(thought);
       thoughts.add(thought);
+    });
+  }
+
+  void submitThoughtEdit(Thought thought, String newStr) {
+    setState(() {
+      thought.contents = newStr;
+      saveThoughts(widget.saveFile, thoughts);
     });
   }
 
@@ -72,64 +78,60 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     setWindowTitle(widget.title);
 
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded (
-            child: Column (
-              children: [
+      body: WindowBorder(
+        color: Colors.white10,
+        width: 0,
+        child: Column(
+          children: [
+            WindowTitleBarBox(
+              child: Container(
+                color: Color(0xFF222222),
+                child: Row(
+                  children: [
 
-                WindowTitleBarBox(
-                  child: Container(
-                    color: Colors.black12,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 8),
-                        Text(widget.title),
-                        Expanded(child: MoveWindow(),),
-                        WindowButtons()
-                      ],
-                    )
-                  ),
-                ),
-
-                Expanded(child:
-                  SizedBox(
-                    width: widget.thoughtEntryWidth,
-                    child: Column(
-                      children: [
-                        // Widget for text entry.
-                        ThoughtEntry(
-                            addThought: addThought, updateSearch: updateSearch),
-
-                        // Separator
-                        SizedBox(height: 10),
-
-                        // Widget for similar thoughts section.
-                        SimilarThoughts(
-                          thoughts: searchTerm.isEmpty
-                            ? []
-                            : searchIndex.search(searchTerm)),
-                      ],
+                    Expanded(
+                      child: MoveWindow(
+                        child: Row(
+                          children: [
+                            SizedBox(width: 8),
+                            Text(widget.title),
+                            Spacer(),
+                          ],
+                        ),
+                      ),
                     ),
+
+                    WindowButtons()
+
+                  ],
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Column(
+                children: [
+                  // Widget for text entry.
+                  ThoughtEntry(
+                    addThought: addThought,
+                    updateSearch: updateSearch
                   ),
-                ),
-                // 20px of space between thought entry/similar thoughts and thought library.
-                //SizedBox(width: 20),
 
+                  // Separator
+                  SizedBox(height: 10),
 
-                Expanded(
-                  child: thoughts.isEmpty
-                      ? Text(
-                    'My mind is empty.',
-                    textAlign: TextAlign.center,
-                  )
-                      : ThoughtLibrary(myThoughts: this.thoughts),
-                ),
-              ],
-            )
-          ),
-        ],
-      )
+                  // Widget for similar thoughts section.
+                  SimilarThoughts(
+                    thoughts: searchIndex.search(searchTerm),
+                    submitThoughtEdit: submitThoughtEdit,
+                  ),
+                ],
+              ),
+            ),
+
+          ],
+        )
+      ),
     );
   }
 }

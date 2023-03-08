@@ -9,10 +9,12 @@ import 'package:thought_sort/widgets/thought_card.dart';
 
 class ThoughtLibrary extends StatefulWidget {
   final List<Thought> myThoughts;
+  final Function(Thought, String) submitThoughtEdit;
 
   const ThoughtLibrary({
     super.key,
     required this.myThoughts,
+    required this.submitThoughtEdit,
   });
 
   @override
@@ -34,7 +36,7 @@ class _ThoughtLibrary extends State<ThoughtLibrary> {
         final thought = widget.myThoughts[index];
 
         return GestureDetector(
-          child: ThoughtCard(thought: thought, index: index),
+          child: ThoughtCard(thought: thought, index: index, submitThoughtEdit: widget.submitThoughtEdit,),
         );
       },
     );
