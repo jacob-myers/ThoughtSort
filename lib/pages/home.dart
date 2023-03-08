@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thought_sort/search.dart';
+import 'package:thought_sort/widgets/thought_card.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
@@ -41,8 +42,10 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   void refreshThoughts() {
-    this.thoughts = loadThoughts(widget.saveFile);
-    searchIndex = ThoughtSearch(thoughts);
+    setState(() {
+      this.thoughts = loadThoughts(widget.saveFile);
+      searchIndex = ThoughtSearch(thoughts);
+    });
   }
 
   // addThought is passed to ThoughtEntry, so that when a thought is added
@@ -111,10 +114,23 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
             Expanded(
               child: Column(
                 children: [
-                  // Widget for text entry.
-                  ThoughtEntry(
-                    addThought: addThought,
-                    updateSearch: updateSearch
+                  Row(
+                    children: [
+                      Expanded(child: ThoughtEntry(
+                          addThought: addThought,
+                          updateSearch: updateSearch
+                        ),
+                      ),
+                      IconButton(
+                        iconSize: 40,
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          List<Thought> thought = [];
+                          saveThoughts(widget.saveFile, thought);
+                          refreshThoughts();
+                        },
+                      ),
+                    ]
                   ),
 
                   // Separator
@@ -124,11 +140,11 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                   SimilarThoughts(
                     thoughts: searchIndex.search(searchTerm),
                     submitThoughtEdit: submitThoughtEdit,
+                    refresh: refreshThoughts,
                   ),
                 ],
               ),
             ),
-
           ],
         )
       ),

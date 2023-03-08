@@ -10,11 +10,13 @@ import 'package:thought_sort/widgets/thought_card.dart';
 class SimilarThoughts extends StatefulWidget {
   final List<Thought> thoughts;
   final Function(Thought, String) submitThoughtEdit;
+  final Function() refresh;
 
   SimilarThoughts({
     super.key,
     required this.thoughts,
     required this.submitThoughtEdit,
+    required this.refresh,
   });
 
   @override
@@ -37,7 +39,7 @@ class _SimilarThoughts extends State<SimilarThoughts> {
             final thought = widget.thoughts[index];
 
             return GestureDetector(
-              child: ThoughtCard(thought: thought, index: index, submitThoughtEdit: widget.submitThoughtEdit,),
+              child: ThoughtCard(thought: thought, index: index, submitThoughtEdit: widget.submitThoughtEdit, refresh: widget.refresh),
             );
           },
         )

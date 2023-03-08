@@ -33,7 +33,7 @@ class _ThoughtEntry extends State<ThoughtEntry> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
