@@ -15,24 +15,30 @@ final _lightColors = [
   Colors.pinkAccent.shade100,
   Colors.tealAccent.shade100,
   */
-  LinearGradient(colors:
-  [Color.fromARGB(255, 255, 243, 117), Colors.amber.shade300],
-  begin: Alignment.topCenter, end: Alignment.bottomCenter),
-  LinearGradient(colors:
-  [Color.fromARGB(255, 193, 255, 106), Color.fromARGB(255, 125, 229, 96)],
-  begin: Alignment.topCenter, end: Alignment.bottomCenter),
-  LinearGradient(colors:
-  [Color.fromARGB(255, 101, 247, 252), Colors.lightBlue.shade300],
-  begin: Alignment.topCenter, end: Alignment.bottomCenter),
-  LinearGradient(colors:
-  [Color.fromARGB(255, 255, 222, 77), Color.fromARGB(255, 255, 168, 69)],
-  begin: Alignment.topCenter, end: Alignment.bottomCenter),
-  LinearGradient(colors:
-  [Color.fromARGB(255, 253, 148, 202), Colors.pink.shade300],
-  begin: Alignment.topCenter, end: Alignment.bottomCenter),
-  LinearGradient(colors:
-  [Color.fromARGB(255, 93, 229, 202), Colors.teal.shade300],
-  begin: Alignment.topCenter, end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 255, 243, 117), Colors.amber.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+  LinearGradient(colors: [
+    Color.fromARGB(255, 193, 255, 106),
+    Color.fromARGB(255, 125, 229, 96)
+  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 101, 247, 252), Colors.lightBlue.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+  LinearGradient(colors: [
+    Color.fromARGB(255, 255, 222, 77),
+    Color.fromARGB(255, 255, 168, 69)
+  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 253, 148, 202), Colors.pink.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 93, 229, 202), Colors.teal.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
 ];
 
 class ThoughtCard extends StatefulWidget {
@@ -65,47 +71,42 @@ class _ThoughtCard extends State<ThoughtCard> {
 
     return Card(
       child: GestureDetector(
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: gradient,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  blurRadius: 4,
-                  offset: Offset(2, 2),
-                ),
-              ],
-            ),
-            constraints: BoxConstraints(minHeight: minHeight),
-            padding: EdgeInsets.all(8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                Text(
-                  time,
-                  style: TextStyle(color: Colors.black.withOpacity(0.5)),
-                ),
-
-                SizedBox(height: 4),
-
-                buildCardText(beingEdited),
-
-              ],
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: gradient,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black,
+                    blurRadius: 4,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              constraints: BoxConstraints(minHeight: minHeight),
+              padding: EdgeInsets.all(8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    time,
+                    style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                  ),
+                  SizedBox(height: 4),
+                  buildCardText(beingEdited),
+                ],
+              ),
             ),
           ),
-        ),
-        onTap: () {
-          setState(() {
-            beingEdited = true;
-            focusNode.requestFocus();
-          });
-        }
-      ),
+          onTap: () {
+            setState(() {
+              beingEdited = true;
+              focusNode.requestFocus();
+            });
+          }),
     );
   }
 
@@ -123,12 +124,9 @@ class _ThoughtCard extends State<ThoughtCard> {
         // Styling.
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 2)
-          ),
+              borderSide: BorderSide(color: Colors.transparent, width: 2)),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 2)
-          ),
-
+              borderSide: BorderSide(color: Colors.transparent, width: 2)),
           hintText: 'Make a new thought?',
         ),
 
@@ -167,4 +165,3 @@ class _ThoughtCard extends State<ThoughtCard> {
     }
   }
 }
-
