@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:thought_sort/search.dart';
+import 'package:thought_sort/widgets/thought_card.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+
 
 // Widgets.
 import 'package:thought_sort/widgets/thought_entry.dart';
@@ -32,7 +34,6 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   late List<Thought> thoughts;
   late ThoughtSearch searchIndex;
   String searchTerm = "";
-  //bool isThought = false;
 
   @override
   void initState() {
@@ -42,8 +43,10 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   void refreshThoughts() {
-    this.thoughts = loadThoughts("thoughts");
-    searchIndex = ThoughtSearch(thoughts);
+    setState(() {
+      this.thoughts = loadThoughts("thoughts");
+      searchIndex = ThoughtSearch(thoughts);
+    });
   }
 
   // addThought is passed to ThoughtEntry, so that when a thought is added
@@ -71,9 +74,14 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     //Sets the window title.
     setWindowTitle(widget.title);
 
+    void Function() refreshThoughtsCallback = () {
+      refreshThoughts();
+    };
+
     return Scaffold(
       body: Column(
         children: [
+          ThoughtCard(thought: thoughts[0], index: 0),
           Expanded (
             child: Column (
               children: [
@@ -85,7 +93,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                       children: [
                         SizedBox(width: 8),
                         Text(widget.title),
-                        Expanded(child: MoveWindow(),),
+                        Expanded(child: MoveWindow()),
                         WindowButtons()
                       ],
                     )
@@ -98,8 +106,23 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                     child: Column(
                       children: [
                         // Widget for text entry.
-                        ThoughtEntry(
-                            addThought: addThought, updateSearch: updateSearch),
+
+                        Row(
+                          children: [
+                            Expanded(child: ThoughtEntry(
+                              addThought: addThought, updateSearch: updateSearch)),
+
+                            IconButton(
+                              iconSize: 40,
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                List<Thought> thought = [];
+                                saveThoughts('thoughts', thought);
+                                refreshThoughts();
+                              },
+                            ),
+                          ],
+                        ),
 
                         // Separator
                         SizedBox(height: 10),
@@ -132,6 +155,9 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
       )
     );
   }
+
+
+
 }
 
 class WindowButtons extends StatelessWidget {
