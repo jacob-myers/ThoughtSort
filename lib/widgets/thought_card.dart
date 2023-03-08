@@ -111,6 +111,7 @@ class _ThoughtCard extends State<ThoughtCard> {
 
   Widget buildCardText(bool beingEdited) {
     if (beingEdited) {
+      //print('rebuilding');
       return TextField(
         style: CustomStyle.cardEditText,
         controller: TextEditingController(text: widget.thought.contents),
@@ -133,9 +134,10 @@ class _ThoughtCard extends State<ThoughtCard> {
 
         // When Enter is pressed.
         onSubmitted: (String value) {
-          beingEdited = false;
-          editThought('thoughts', widget.thought, value);
-          //widget.submitThoughtEdit(widget.thought, value);
+          setState(() {
+            this.beingEdited = false;
+            widget.submitThoughtEdit(widget.thought, value);
+          });
         },
       );
     }

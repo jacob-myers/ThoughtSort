@@ -59,7 +59,8 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
 
   void submitThoughtEdit(Thought thought, String newStr) {
     setState(() {
-      editThought(widget.saveFile, thought, newStr);
+      thought.contents = newStr;
+      saveThoughts(widget.saveFile, thoughts);
     });
   }
 
