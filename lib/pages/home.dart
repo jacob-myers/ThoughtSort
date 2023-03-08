@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:thought_sort/search.dart';
-import 'package:thought_sort/widgets/thought_card.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-
 
 // Widgets.
 import 'package:thought_sort/widgets/thought_entry.dart';
@@ -16,8 +14,7 @@ class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title});
 
   final String title;
-  // Width of the entry column (in px).
-  final double thoughtEntryWidth = 300.0;
+  final String saveFile = 'thoughts';
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
@@ -34,6 +31,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   late List<Thought> thoughts;
   late ThoughtSearch searchIndex;
   String searchTerm = "";
+  //bool isThought = false;
 
   @override
   void initState() {
@@ -43,10 +41,8 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   void refreshThoughts() {
-    setState(() {
-      this.thoughts = loadThoughts("thoughts");
-      searchIndex = ThoughtSearch(thoughts);
-    });
+    this.thoughts = loadThoughts(widget.saveFile);
+    searchIndex = ThoughtSearch(thoughts);
   }
 
   // addThought is passed to ThoughtEntry, so that when a thought is added
@@ -55,9 +51,16 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   void addThought(int id, String strThought) {
     setState(() {
       var thought = Thought.now(id, strThought);
-      appendThought('thoughts', thought);
+      appendThought(widget.saveFile, thought);
       searchIndex.addToIndex(thought);
       thoughts.add(thought);
+    });
+  }
+
+  void submitThoughtEdit(Thought thought, String newStr) {
+    setState(() {
+      thought.contents = newStr;
+      saveThoughts(widget.saveFile, thoughts);
     });
   }
 
@@ -74,90 +77,63 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     //Sets the window title.
     setWindowTitle(widget.title);
 
-    void Function() refreshThoughtsCallback = () {
-      refreshThoughts();
-    };
-
     return Scaffold(
-      body: Column(
-        children: [
-          ThoughtCard(thought: thoughts[0], index: 0),
-          Expanded (
-            child: Column (
-              children: [
+      body: WindowBorder(
+        color: Colors.white10,
+        width: 0,
+        child: Column(
+          children: [
+            WindowTitleBarBox(
+              child: Container(
+                color: Color(0xFF222222),
+                child: Row(
+                  children: [
 
-                WindowTitleBarBox(
-                  child: Container(
-                    color: Colors.black12,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 8),
-                        Text(widget.title),
-                        Expanded(child: MoveWindow()),
-                        WindowButtons()
-                      ],
-                    )
-                  ),
-                ),
-
-                Expanded(child:
-                  SizedBox(
-                    width: widget.thoughtEntryWidth,
-                    child: Column(
-                      children: [
-                        // Widget for text entry.
-
-                        Row(
+                    Expanded(
+                      child: MoveWindow(
+                        child: Row(
                           children: [
-                            Expanded(child: ThoughtEntry(
-                              addThought: addThought, updateSearch: updateSearch)),
-
-                            IconButton(
-                              iconSize: 40,
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                List<Thought> thought = [];
-                                saveThoughts('thoughts', thought);
-                                refreshThoughts();
-                              },
-                            ),
+                            SizedBox(width: 8),
+                            Text(widget.title),
+                            Spacer(),
                           ],
                         ),
-
-                        // Separator
-                        SizedBox(height: 10),
-
-                        // Widget for similar thoughts section.
-                        SimilarThoughts(
-                          thoughts: searchTerm.isEmpty
-                            ? []
-                            : searchIndex.search(searchTerm)),
-                      ],
+                      ),
                     ),
+
+                    WindowButtons()
+
+                  ],
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Column(
+                children: [
+                  // Widget for text entry.
+                  ThoughtEntry(
+                    addThought: addThought,
+                    updateSearch: updateSearch
                   ),
-                ),
-                // 20px of space between thought entry/similar thoughts and thought library.
-                //SizedBox(width: 20),
 
+                  // Separator
+                  SizedBox(height: 10),
 
-                Expanded(
-                  child: thoughts.isEmpty
-                      ? Text(
-                    'My mind is empty.',
-                    textAlign: TextAlign.center,
-                  )
-                      : ThoughtLibrary(myThoughts: this.thoughts),
-                ),
-              ],
-            )
-          ),
-        ],
-      )
+                  // Widget for similar thoughts section.
+                  SimilarThoughts(
+                    thoughts: searchIndex.search(searchTerm),
+                    submitThoughtEdit: submitThoughtEdit,
+                  ),
+                ],
+              ),
+            ),
+
+          ],
+        )
+      ),
     );
   }
-
-
-
 }
 
 class WindowButtons extends StatelessWidget {
