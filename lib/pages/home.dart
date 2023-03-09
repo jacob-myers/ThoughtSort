@@ -16,6 +16,7 @@ class ThoughtSortHome extends StatefulWidget {
 
   final String title;
   final String saveFile = 'thoughts';
+  final Function toggleTheme;
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
@@ -152,6 +153,13 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                     submitThoughtEdit: submitThoughtEdit,
                     refresh: refreshThoughts,
                     removeThoughtFromEverywhere: removeThoughtFromEverywhere,
+                  ),
+
+                  ElevatedButton (
+                    onPressed: () {
+                      widget.toggleTheme();
+                    },
+                    child: Text("Toggle Theme"),
                   ),
                 ],
               ),
