@@ -1,36 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:thought_sort/search.dart';
+import 'package:thought_sort/widgets/thought_card.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 // Widgets.
 import 'package:thought_sort/widgets/thought_entry.dart';
 import 'package:thought_sort/widgets/similar_thoughts.dart';
-import 'package:thought_sort/widgets/thought_card.dart';
-
-// Styles.
-import 'package:thought_sort/styles.dart';
 
 import '../persistence.dart';
-
 
 class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title, required this.toggleTheme});
 
   final String title;
-<<<<<<< Updated upstream
-  // Width of the entry column (in px).
-  final double thoughtEntryWidth = 300.0;
-=======
   final String saveFile = 'thoughts';
-  final Function toggleTheme;
->>>>>>> Stashed changes
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
 }
 
 class _ThoughtSortHome extends State<ThoughtSortHome> {
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -39,6 +30,8 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   late List<Thought> thoughts;
+  late ThoughtSearch searchIndex;
+  String searchTerm = "";
   //bool isThought = false;
 
   @override
@@ -49,7 +42,10 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 
   void refreshThoughts() {
-    this.thoughts = loadThoughts("thoughts");
+    setState(() {
+      this.thoughts = loadThoughts(widget.saveFile);
+      searchIndex = ThoughtSearch(thoughts);
+    });
   }
 
   // addThought is passed to ThoughtEntry, so that when a thought is added
@@ -57,8 +53,31 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   // This updates ThoughtLibrary.
   void addThought(int id, String strThought) {
     setState(() {
-      appendThought('thoughts', Thought.now(id, strThought));
+      var thought = Thought.now(id, strThought);
+      appendThought(widget.saveFile, thought);
+      searchIndex.addToIndex(thought);
+      thoughts.add(thought);
+    });
+  }
+
+  void removeThoughtFromEverywhere(String filename, Thought thought) {
+    setState(() {
+      thoughts.remove(thought);
+      saveThoughts(filename, thoughts);
       refreshThoughts();
+    });
+  }
+
+  void submitThoughtEdit(Thought thought, String newStr) {
+    setState(() {
+      thought.contents = newStr;
+      saveThoughts(widget.saveFile, thoughts);
+    });
+  }
+
+  void updateSearch(String searchTerm) {
+    setState(() {
+      this.searchTerm = searchTerm;
     });
   }
 
@@ -70,20 +89,11 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     setWindowTitle(widget.title);
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.title),
-
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Row(
+      body: WindowBorder(
+        color: Colors.white10,
+        width: 0,
+        child: Column(
           children: [
-<<<<<<< Updated upstream
-            // Column contains thought entry and similar thoughts.
-            SizedBox(
-              width: widget.thoughtEntryWidth,
-=======
             WindowTitleBarBox(
               child: Container(
                 color: Color(0xFF222222),
@@ -108,50 +118,60 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                 ),
               ),
             ),
-            
+
             Expanded(
->>>>>>> Stashed changes
               child: Column(
                 children: [
-                  // Widget for text entry.
-                  ThoughtEntry(addThought: addThought),
+                  Row(
+                    children: [
+                      Expanded(child: ThoughtEntry(
+                          addThought: addThought,
+                          updateSearch: updateSearch
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      IconButton(
+                        iconSize: 40,
+                        icon: const Icon(Icons.folder_delete),
+                        onPressed: () {
+                          List<Thought> thought = [];
+                          saveThoughts(widget.saveFile, thought);
+                          refreshThoughts();
+                        },
+                      ),
+                      SizedBox(width: 20,)
+                    ]
+                  ),
 
                   // Separator
                   SizedBox(height: 10),
 
                   // Widget for similar thoughts section.
-<<<<<<< Updated upstream
-                  SimilarThoughts(myThoughts: this.thoughts),
-=======
                   SimilarThoughts(
                     thoughts: searchIndex.search(searchTerm),
                     submitThoughtEdit: submitThoughtEdit,
+                    refresh: refreshThoughts,
+                    removeThoughtFromEverywhere: removeThoughtFromEverywhere,
                   ),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.toggleTheme();
-                    },
-                    child: Text('Toggle Theme'),
-                  ),
->>>>>>> Stashed changes
                 ],
               ),
             ),
-
-            // 20px of space between thought entry/similar thoughts and thought library.
-            SizedBox(width: 20),
-
-            Expanded(
-              child: thoughts.isEmpty ? Text(
-                'My mind is empty.',
-                textAlign: TextAlign.center,
-              ) :
-              ThoughtLibrary(myThoughts: this.thoughts),
-            ),
           ],
-        ),
-      )
+        )
+      ),
+    );
+  }
+}
+
+class WindowButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        MinimizeWindowButton(),
+        MaximizeWindowButton(),
+        CloseWindowButton()
+      ],
     );
   }
 }

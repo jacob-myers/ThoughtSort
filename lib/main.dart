@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'styles.dart';
 import 'pages/home.dart';
-import 'trie.dart';
 
 void main() {
   runApp(const MyApp());

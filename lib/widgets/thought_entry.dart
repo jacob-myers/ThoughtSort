@@ -5,12 +5,13 @@ import '../persistence.dart';
 class ThoughtEntry extends StatefulWidget {
   final Thought? thought;
   final Function(int, String) addThought;
+  final Function(String) updateSearch;
 
-  ThoughtEntry({
-    super.key,
-    this.thought,
-    required this.addThought
-  });
+  ThoughtEntry(
+      {super.key,
+      this.thought,
+      required this.addThought,
+      required this.updateSearch});
 
   @override
   State<ThoughtEntry> createState() => _ThoughtEntry();
@@ -18,6 +19,7 @@ class ThoughtEntry extends StatefulWidget {
 
 class _ThoughtEntry extends State<ThoughtEntry> {
   final textFieldController = TextEditingController();
+  FocusNode focusNode = FocusNode();
   int id = 0;
   late String contents;
   late DateTime date;
@@ -31,7 +33,7 @@ class _ThoughtEntry extends State<ThoughtEntry> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.fromLTRB(16, 16, 0, 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -39,6 +41,7 @@ class _ThoughtEntry extends State<ThoughtEntry> {
               controller: textFieldController,
 
               keyboardType: TextInputType.text,
+              focusNode: focusNode,
 
               textInputAction: TextInputAction.done,
               maxLines: null,
@@ -54,7 +57,10 @@ class _ThoughtEntry extends State<ThoughtEntry> {
                 widget.addThought(id, value);
                 // Clears the TextField.
                 textFieldController.clear();
+                widget.updateSearch("");
+                focusNode.requestFocus();
               },
+              onChanged: widget.updateSearch,
             ),
           ],
         ),
