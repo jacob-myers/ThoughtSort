@@ -11,12 +11,13 @@ class SimilarThoughts extends StatefulWidget {
   final List<Thought> thoughts;
   final Function(Thought, String) submitThoughtEdit;
   final Function() refresh;
+  final Function(String, Thought) removeThoughtFromEverywhere;
 
   SimilarThoughts({
     super.key,
     required this.thoughts,
     required this.submitThoughtEdit,
-    required this.refresh,
+    required this.refresh, required this.removeThoughtFromEverywhere,
   });
 
   @override
@@ -39,7 +40,13 @@ class _SimilarThoughts extends State<SimilarThoughts> {
             final thought = widget.thoughts[index];
 
             return GestureDetector(
-              child: ThoughtCard(thought: thought, index: index, submitThoughtEdit: widget.submitThoughtEdit, refresh: widget.refresh),
+              child: ThoughtCard(
+                thought: thought,
+                index: index,
+                submitThoughtEdit: widget.submitThoughtEdit,
+                refresh: widget.refresh,
+                removeThoughtFromEverywhere: widget.removeThoughtFromEverywhere,
+              ),
             );
           },
         )

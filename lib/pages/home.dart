@@ -60,6 +60,14 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     });
   }
 
+  void removeThoughtFromEverywhere(String filename, Thought thought) {
+    setState(() {
+      thoughts.remove(thought);
+      saveThoughts(filename, thoughts);
+      refreshThoughts();
+    });
+  }
+
   void submitThoughtEdit(Thought thought, String newStr) {
     setState(() {
       thought.contents = newStr;
@@ -121,15 +129,17 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                           updateSearch: updateSearch
                         ),
                       ),
+                      SizedBox(width: 10,),
                       IconButton(
                         iconSize: 40,
-                        icon: const Icon(Icons.delete),
+                        icon: const Icon(Icons.folder_delete),
                         onPressed: () {
                           List<Thought> thought = [];
                           saveThoughts(widget.saveFile, thought);
                           refreshThoughts();
                         },
                       ),
+                      SizedBox(width: 20,)
                     ]
                   ),
 
@@ -141,6 +151,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                     thoughts: searchIndex.search(searchTerm),
                     submitThoughtEdit: submitThoughtEdit,
                     refresh: refreshThoughts,
+                    removeThoughtFromEverywhere: removeThoughtFromEverywhere,
                   ),
                 ],
               ),

@@ -7,6 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:thought_sort/persistence.dart';
 import 'package:thought_sort/widgets/thought_card.dart';
 
+/*
 class ThoughtLibrary extends StatefulWidget {
   final List<Thought> myThoughts;
   final Function(Thought, String) submitThoughtEdit;
@@ -42,3 +43,4 @@ class _ThoughtLibrary extends State<ThoughtLibrary> {
     );
   }
 }
+*/

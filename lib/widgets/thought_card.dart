@@ -46,6 +46,7 @@ class ThoughtCard extends StatefulWidget {
   String? thoughtText;
   final Function(Thought, String) submitThoughtEdit;
   final Function() refresh;
+  final Function(String, Thought) removeThoughtFromEverywhere;
 
   ThoughtCard({
     Key? key,
@@ -53,6 +54,7 @@ class ThoughtCard extends StatefulWidget {
     required this.index,
     required this.submitThoughtEdit,
     required this.refresh,
+    required this.removeThoughtFromEverywhere,
 
   }) : super(key: key);
 
@@ -91,33 +93,34 @@ class _ThoughtCard extends State<ThoughtCard> {
             ),
             constraints: BoxConstraints(minHeight: minHeight),
             padding: EdgeInsets.all(8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  time,
-                  style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        time,
+                        style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                      ),
+                      SizedBox(height: 4),
+                      buildCardText(beingEdited),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 4),
-                buildCardText(beingEdited),
 
-                Flexible(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child:IconButton(
-                      iconSize: 40,
-                      color: Colors.black,
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        removeThought('thoughts', widget.thought);
-                        widget.refresh();
-                      },
-                    ),
-                  )
+                IconButton(
+                  iconSize: 40,
+                  color: Colors.black,
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    widget.removeThoughtFromEverywhere('thoughts',widget.thought);
+                  },
                 ),
               ],
-            ),
+            )
           ),
         ),
         onTap: () {
