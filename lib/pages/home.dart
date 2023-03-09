@@ -14,11 +14,16 @@ import '../persistence.dart';
 
 
 class ThoughtSortHome extends StatefulWidget {
-  const ThoughtSortHome({super.key, required this.title});
+  const ThoughtSortHome({super.key, required this.title, required this.toggleTheme});
 
   final String title;
+<<<<<<< Updated upstream
   // Width of the entry column (in px).
   final double thoughtEntryWidth = 300.0;
+=======
+  final String saveFile = 'thoughts';
+  final Function toggleTheme;
+>>>>>>> Stashed changes
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
@@ -74,9 +79,38 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
         padding: EdgeInsets.all(20.0),
         child: Row(
           children: [
+<<<<<<< Updated upstream
             // Column contains thought entry and similar thoughts.
             SizedBox(
               width: widget.thoughtEntryWidth,
+=======
+            WindowTitleBarBox(
+              child: Container(
+                color: Color(0xFF222222),
+                child: Row(
+                  children: [
+
+                    Expanded(
+                      child: MoveWindow(
+                        child: Row(
+                          children: [
+                            SizedBox(width: 8),
+                            Text(widget.title),
+                            Spacer(),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    WindowButtons()
+
+                  ],
+                ),
+              ),
+            ),
+            
+            Expanded(
+>>>>>>> Stashed changes
               child: Column(
                 children: [
                   // Widget for text entry.
@@ -86,7 +120,21 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                   SizedBox(height: 10),
 
                   // Widget for similar thoughts section.
+<<<<<<< Updated upstream
                   SimilarThoughts(myThoughts: this.thoughts),
+=======
+                  SimilarThoughts(
+                    thoughts: searchIndex.search(searchTerm),
+                    submitThoughtEdit: submitThoughtEdit,
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.toggleTheme();
+                    },
+                    child: Text('Toggle Theme'),
+                  ),
+>>>>>>> Stashed changes
                 ],
               ),
             ),

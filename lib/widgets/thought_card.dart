@@ -6,6 +6,7 @@ import '../persistence.dart';
 //import 'package:sqflite_database_example/model/note.dart';
 
 final _lightColors = [
+<<<<<<< Updated upstream
   /*
   Colors.amber.shade300,
   Colors.lightGreen.shade300,
@@ -32,6 +33,32 @@ final _lightColors = [
   LinearGradient(colors:
   [Color.fromARGB(255, 93, 229, 202), Colors.teal.shade300],
   begin: Alignment.topCenter, end: Alignment.bottomCenter),
+=======
+  LinearGradient(
+      colors: [Color.fromARGB(255, 255, 243, 117), Colors.amber.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+  LinearGradient(colors: [
+    Color.fromARGB(255, 193, 255, 106),
+    Color.fromARGB(255, 125, 229, 96)
+  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 101, 247, 252), Colors.lightBlue.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+  LinearGradient(colors: [
+    Color.fromARGB(255, 255, 222, 77),
+    Color.fromARGB(255, 255, 168, 69)
+  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 253, 148, 202), Colors.pink.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+  LinearGradient(
+      colors: [Color.fromARGB(255, 93, 229, 202), Colors.teal.shade300],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter),
+>>>>>>> Stashed changes
 ];
 
 class ThoughtCard extends StatelessWidget {
