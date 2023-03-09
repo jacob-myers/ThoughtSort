@@ -6,14 +6,6 @@ import 'package:thought_sort/styles.dart';
 import '../persistence.dart';
 
 final _lightColors = [
-  /*
-  Colors.amber.shade300,
-  Colors.lightGreen.shade300,
-  Colors.lightBlue.shade300,
-  Colors.orange.shade300,
-  Colors.pinkAccent.shade100,
-  Colors.tealAccent.shade100,
-  */
   LinearGradient(
       colors: [Color.fromARGB(255, 255, 243, 117), Colors.amber.shade300],
       begin: Alignment.topCenter,

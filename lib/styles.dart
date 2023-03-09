@@ -16,7 +16,27 @@ class CustomStyle {
     onSurface: Colors.white70,
   );
 
+    static ColorScheme pageSchemeLight = ColorScheme(
+    primary: Colors.white,
+    secondary: Colors.black12,
+    brightness: Brightness.light,
+    onPrimary: Colors.black,
+    onSecondary: Colors.black,
+    error: Colors.red.shade800,
+    onError: Colors.white70,
+    background: Colors.red,
+    onBackground: Colors.white70,
+    surface: Colors.black38,
+    onSurface: Colors.white70,
+  );
+
   static AppBarTheme appBarTheme = AppBarTheme(
+    foregroundColor: pageScheme.primary,
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+  );
+
+    static AppBarTheme appBarThemeLight = AppBarTheme(
     foregroundColor: pageScheme.primary,
     backgroundColor: Colors.transparent,
     elevation: 0,

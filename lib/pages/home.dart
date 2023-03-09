@@ -12,10 +12,11 @@ import 'package:thought_sort/widgets/similar_thoughts.dart';
 import '../persistence.dart';
 
 class ThoughtSortHome extends StatefulWidget {
-  const ThoughtSortHome({super.key, required this.title});
+  const ThoughtSortHome({super.key, required this.title, required this.toggleTheme});
 
   final String title;
   final String saveFile = 'thoughts';
+  final Function toggleTheme;
 
   @override
   State<ThoughtSortHome> createState() => _ThoughtSortHome();
@@ -90,7 +91,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
 
     return Scaffold(
       body: WindowBorder(
-        color: Colors.white10,
+        color: Colors.black,
         width: 0,
         child: Column(
           children: [
@@ -105,7 +106,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                         child: Row(
                           children: [
                             SizedBox(width: 8),
-                            Text(widget.title),
+                            Text(widget.title, style: TextStyle(color: Colors.white),),
                             Spacer(),
                           ],
                         ),
@@ -153,6 +154,16 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                     refresh: refreshThoughts,
                     removeThoughtFromEverywhere: removeThoughtFromEverywhere,
                   ),
+
+
+                  SizedBox(height: 5,),
+                  ElevatedButton (
+                    onPressed: () {
+                      widget.toggleTheme();
+                    },
+                    child: Text("Toggle Theme"),
+                  ),
+                  SizedBox(height: 5,),
                 ],
               ),
             ),
