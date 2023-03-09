@@ -163,14 +163,28 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
   }
 }
 
+var buttonColors = WindowButtonColors(
+  iconNormal: const Color (0xFFd8d4c0),
+  mouseOver: const Color (0xFF202123),
+  iconMouseOver: const Color (0xFF3271cc),
+
+);
+
+var closeColors = WindowButtonColors(
+  iconNormal: const Color (0xFFd8d4c0),
+  mouseOver: const Color (0xFF5b4142),
+  iconMouseOver: const Color (0xFFf43f00),
+
+);
+
 class WindowButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        MinimizeWindowButton(),
-        MaximizeWindowButton(),
-        CloseWindowButton()
+        MinimizeWindowButton(colors: buttonColors),
+        MaximizeWindowButton(colors: buttonColors),
+        CloseWindowButton(colors: closeColors)
       ],
     );
   }
