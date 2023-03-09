@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:thought_sort/styles.dart';
 
 import '../persistence.dart';
-//import 'package:sqflite_database_example/model/note.dart';
 
 final _lightColors = [
   /*
@@ -46,12 +45,17 @@ class ThoughtCard extends StatefulWidget {
   final int index;
   String? thoughtText;
   final Function(Thought, String) submitThoughtEdit;
+  final Function() refresh;
+  final Function(String, Thought) removeThoughtFromEverywhere;
 
   ThoughtCard({
     Key? key,
     required this.thought,
     required this.index,
     required this.submitThoughtEdit,
+    required this.refresh,
+    required this.removeThoughtFromEverywhere,
+
   }) : super(key: key);
 
   @override
@@ -71,43 +75,61 @@ class _ThoughtCard extends State<ThoughtCard> {
     final minHeight = getMinHeight(widget.index);
 
     return Card(
+
       child: GestureDetector(
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: gradient,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 4,
-                    offset: Offset(2, 2),
-                  ),
-                ],
-              ),
-              constraints: BoxConstraints(minHeight: minHeight),
-              padding: EdgeInsets.all(8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    time,
-                    style: TextStyle(color: Colors.black.withOpacity(0.5)),
-                  ),
-                  SizedBox(height: 4),
-                  buildCardText(beingEdited),
-                ],
-              ),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black,
+                  blurRadius: 4,
+                  offset: Offset(2, 2),
+                ),
+              ],
             ),
+            constraints: BoxConstraints(minHeight: minHeight),
+            padding: EdgeInsets.all(8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        time,
+                        style: TextStyle(color: Colors.black.withOpacity(0.5)),
+                      ),
+                      SizedBox(height: 4),
+                      buildCardText(beingEdited),
+                    ],
+                  ),
+                ),
+
+                IconButton(
+                  iconSize: 40,
+                  color: Colors.black,
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    widget.removeThoughtFromEverywhere('thoughts',widget.thought);
+                  },
+                ),
+              ],
+            )
           ),
-          onTap: () {
-            setState(() {
-              beingEdited = true;
-              focusNode.requestFocus();
-            });
-          }),
+        ),
+        onTap: () {
+          setState(() {
+            beingEdited = true;
+            focusNode.requestFocus();
+          });
+        }
+      ),
     );
   }
 
