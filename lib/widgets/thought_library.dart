@@ -4,7 +4,7 @@
 // Widget that uses the Card class to display a thought.
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:thought_sort/persistence.dart';
+import 'package:thought_sort/classes/persistence.dart';
 import 'package:thought_sort/widgets/thought_card.dart';
 
 /*

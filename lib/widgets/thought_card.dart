@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:thought_sort/styles.dart';
 
-import '../persistence.dart';
+import '../classes/persistence.dart';
 
 final _lightColors = [
   LinearGradient(

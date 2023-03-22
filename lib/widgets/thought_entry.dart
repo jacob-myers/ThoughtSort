@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../persistence.dart';
+import '../classes/persistence.dart';
 
 // Widget allows user to enter their thoughts and add to thought library.
 class ThoughtEntry extends StatefulWidget {

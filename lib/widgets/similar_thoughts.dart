@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:thought_sort/search.dart';
-import 'package:thought_sort/styles.dart';
-import 'package:thought_sort/persistence.dart';
+import 'package:thought_sort/classes/persistence.dart';
 import 'package:thought_sort/widgets/thought_card.dart';
 
 // Widget used below thought entry to display similar thoughts.

@@ -1,5 +1,5 @@
-import 'package:thought_sort/persistence.dart';
-import 'package:thought_sort/trie.dart';
+import 'package:thought_sort/classes/persistence.dart';
+import 'package:thought_sort/classes/trie.dart';
 
 var wordSplit = RegExp(" +");
 

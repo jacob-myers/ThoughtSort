@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thought_sort/search.dart';
+import 'package:thought_sort/classes/search.dart';
 import 'package:thought_sort/widgets/thought_card.dart';
 import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
@@ -9,7 +9,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:thought_sort/widgets/thought_entry.dart';
 import 'package:thought_sort/widgets/similar_thoughts.dart';
 
-import '../persistence.dart';
+import '../classes/persistence.dart';
 
 class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title, required this.toggleTheme});
