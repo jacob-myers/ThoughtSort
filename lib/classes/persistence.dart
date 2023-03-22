@@ -15,7 +15,7 @@ class Thought {
   @override
   bool operator ==(Object o) {
     if (o is Thought) {
-      return o.id == id && o.contents == contents && o.date == date;
+      return o.id == id && o.contents == contents && o.date.millisecondsSinceEpoch == date.millisecondsSinceEpoch;
     }
     return false;
   }
