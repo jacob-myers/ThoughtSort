@@ -27,6 +27,8 @@ void main() {
       List<Thought> loadedThoughts = loadThoughts('test/test_thoughts');
 
       expect(thoughts[0] == loadedThoughts[0], true);
+      expect(loadedThoughts.length == thoughts.length, true);
+      expect(loadedThoughts.length == 1, true);
     });
 
     test("Editing a thought should change it's value", () {
@@ -37,15 +39,22 @@ void main() {
       List<Thought> newThoughts = loadThoughts('test/test_thoughts');
 
       expect(thoughts[0] == newThoughts[0], true);
+      expect(newThoughts[0].contents, 'an edited thought.');
     });
   });
 
-  // Compile error, < not defined yet for Thought.
-  test('Older thoughts should be < newer thoughts.', () {
-    Thought thought1 = Thought.now(1, 'first thought');
-    Thought thought2 = Thought.now(2, 'second thought');
+  // Compile error, < and > not defined yet for Thought.
+  test('Thoughts should comparable based on date time.', () {
+    DateTime date1 = DateTime(2022);
+    DateTime date2 = DateTime(2023);
 
-    expect(thought1 < thought2, true);
+    Thought thought1 = Thought(1, date1, 'first thought');
+    Thought thought2 = Thought(2, date2, 'second thought');
+
+    //expect(thought1 < thought2, true);
+    expect(thought1 == thought2, false);
+    //expect(thought1 > thought2, false);
+    expect(thought1.date.millisecondsSinceEpoch < thought2.date.millisecondsSinceEpoch, true);
   });
 
 }
