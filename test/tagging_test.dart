@@ -43,6 +43,12 @@ void main() {
     expect(thoughts[2].tags.first == "tag-test3", true);
   });
 
+  test('Tag cannot contain % (used as delimiter)', () {
+    var thought = Thought(1, DateTime(2020), 'thought');
+    thought.addTag("tag%test%");
+    expect(thought.tags.isEmpty, true);
+  });
+
   test('Tags after saving', () {
     // tags should be blank upon initialization
     List<Thought> thoughts = [];

@@ -4,12 +4,49 @@ class Thought {
   int id;
   DateTime date = DateTime.now();
   String contents;
+  List<String> tags = [];
 
-  Thought(this.id, this.date, this.contents);
-  Thought.now(this.id, this.contents);
+  Thought(
+    this.id,
+    this.date,
+    this.contents,
+    {
+      List<String>? tags,
+    }
+  ): tags = tags ?? [];
 
+  Thought.now(
+    this.id,
+    this.contents,
+    {
+      List<String>? tags,
+    }
+  ): tags = tags ?? [];
+
+  void addTag(String tag) {
+    if (tag.contains('%')) {
+      return;
+    }
+    tags.add(tag);
+  }
+
+  void addTags(List<String> tags) {
+    for (var tag in tags) {
+      addTag(tag);
+    }
+  }
+
+  @override
   String toString() {
-    return "$id ${date.millisecondsSinceEpoch} $contents";
+    return "$id ${date.millisecondsSinceEpoch} $contents \n$tagsToString";
+  }
+
+  String get tagsToString {
+    String strTags = '%';
+    for (var tag in tags) {
+      strTags += '$tag%';
+    }
+    return strTags;
   }
 
   @override
@@ -21,6 +58,17 @@ class Thought {
   }
 }
 
+Thought parseThoughtWithTags(String str) {
+  var split = str.split('\n');
+  var thoughtLine = split[0];
+  var tagLine = split[1];
+
+  Thought thought = parseThought(thoughtLine);
+  thought.addTags(parseTags(tagLine));
+
+  return thought;
+}
+
 Thought parseThought(String str) {
   var split = str.split(" ");
   var id = int.parse(split[0]);
@@ -30,6 +78,13 @@ Thought parseThought(String str) {
   return Thought(id, date, thought);
 }
 
+List<String> parseTags(String str) {
+  var tags = str.split('%');
+  tags = tags.skip(1).toList();
+  tags.length = tags.length - 1;
+  return tags;
+}
+
 List<Thought> loadThoughts(String filename) {
   var file = File(filename);
   if (!file.existsSync() || file.lengthSync() == 0) {
@@ -37,7 +92,16 @@ List<Thought> loadThoughts(String filename) {
   }
   var contents = file.readAsStringSync().trim();
   var lines = contents.split("\n");
-  return lines.map(parseThought).toList();
+  lines = _combineLinesForThoughts(lines);
+  return lines.map(parseThoughtWithTags).toList();
+}
+
+List<String> _combineLinesForThoughts (List<String> lst) {
+  List<String> newLst = [];
+  for (int i = 0; i < lst.length; i+= 2) {
+    newLst.add(lst[i] + '\n' + lst[i+1]);
+  }
+  return newLst;
 }
 
 void saveThoughts(String filename, List<Thought> thoughts) {
