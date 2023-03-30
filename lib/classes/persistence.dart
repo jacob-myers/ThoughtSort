@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class Thought {
+class Thought implements Comparable {
   int id;
   DateTime date = DateTime.now();
   String contents;
@@ -19,6 +19,22 @@ class Thought {
     }
     return false;
   }
+
+  @override
+  int compareTo(other) {
+    if (date.millisecondsSinceEpoch == other.date.millisecondsSinceEpoch){
+      return 0;
+    } else if (date.millisecondsSinceEpoch > other.date.millisecondsSinceEpoch){
+      return 1;
+    } else {
+      return -1;
+    }
+
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ date.hashCode ^ contents.hashCode;
+
 }
 
 Thought parseThought(String str) {

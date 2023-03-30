@@ -1,5 +1,6 @@
 import 'package:thought_sort/classes/persistence.dart';
 import 'package:test/test.dart';
+//import 'package:flutter/foundation.dart';
 
 void main() {
 
@@ -75,7 +76,8 @@ void main() {
       thoughts.add(Thought(3, DateTime(2022), 'third thought'));
 
       thoughts.sort();
-      expect(thoughts == sortedThoughts, true);
+
+      expect(thoughts, orderedEquals(sortedThoughts));
     });
 
     test('Start in mixed order.', () {
@@ -85,7 +87,8 @@ void main() {
       thoughts.add(Thought(1, DateTime(2020), 'first thought'));
 
       thoughts.sort();
-      expect(thoughts == sortedThoughts, true);
+
+      expect(thoughts, orderedEquals(sortedThoughts));
     });
 
     test('Start in reverse order.', () {
@@ -95,7 +98,7 @@ void main() {
       thoughts.add(Thought(1, DateTime(2020), 'first thought'));
 
       thoughts.sort();
-      expect(thoughts == sortedThoughts, true);
+      expect(thoughts, orderedEquals(sortedThoughts));
     });
 
     test('Start in mixed, sort to reverse.', () {
@@ -106,7 +109,7 @@ void main() {
 
       thoughts.sort();
       thoughts = thoughts.reversed.toList();
-      expect(thoughts == sortedThoughtsReverse, true);
+      expect(thoughts, orderedEquals(sortedThoughtsReverse));
     });
   });
 }
