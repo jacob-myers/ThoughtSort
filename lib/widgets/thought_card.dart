@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:thought_sort/styles.dart';
+import 'dart:ui' as ui;
 
 import '../classes/persistence.dart';
 
@@ -86,15 +87,18 @@ class _ThoughtCard extends State<ThoughtCard> {
             constraints: BoxConstraints(minHeight: minHeight),
             padding: EdgeInsets.all(8),
             child: Row(
+              textDirection: ui.TextDirection.ltr,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
+                    textDirection: ui.TextDirection.ltr,
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         time,
+                        textDirection: ui.TextDirection.ltr,
                         style: TextStyle(color: Colors.black.withOpacity(0.5)),
                       ),
                       SizedBox(height: 4),
@@ -103,14 +107,17 @@ class _ThoughtCard extends State<ThoughtCard> {
                   ),
                 ),
 
-                IconButton(
-                  iconSize: 40,
-                  color: Colors.black,
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    widget.removeThoughtFromEverywhere('thoughts',widget.thought);
-                  },
-                ),
+                Directionality(
+                  textDirection: ui.TextDirection.ltr,
+                  child: IconButton(
+                    iconSize: 40,
+                    color: Colors.black,
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      widget.removeThoughtFromEverywhere('thoughts', widget.thought);
+                    },
+                  ),
+                )
               ],
             )
           ),
@@ -166,6 +173,7 @@ class _ThoughtCard extends State<ThoughtCard> {
     }
     return Text(
       widget.thought.contents,
+      textDirection: ui.TextDirection.ltr,
       style: TextStyle(
         color: Colors.black,
         fontSize: 20,

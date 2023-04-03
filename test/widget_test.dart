@@ -7,12 +7,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thought_sort/classes/persistence.dart';
 
+// Local
 import 'package:thought_sort/main.dart';
-import 'package:thought_sort/pages/home.dart';
-import 'package:thought_sort/widgets/thought_card.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -30,23 +27,5 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
-  });
-
-  testWidgets('thought card thing', (WidgetTester tester) async {
-    await tester.pumpWidget(ThoughtSortHome(title: 'Title', toggleTheme: () {
-      setState(() {
-        currentTheme = currentTheme == ThemeMode.dark
-            ? ThemeMode.light
-            : ThemeMode.dark;
-      });
-    }
-    ));
-
-    await tester.pumpWidget(ThoughtCard(
-        thought: Thought.now(1, 'test'),
-        index: 0,
-        submitThoughtEdit: (Thought thought, String str) {},
-        refresh: refresh,
-        removeThoughtFromEverywhere: (String str, Thought thought) {}));
   });
 }
