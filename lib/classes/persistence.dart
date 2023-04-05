@@ -144,3 +144,11 @@ void removeThought(String filename, Thought thought) {
   thoughts.remove(thought);
   saveThoughts(filename, thoughts);
 }
+
+int generateIndex(List<Thought> thoughts) {
+  int maxIndex = 0;
+  for (var element in thoughts) {
+    maxIndex = element.id > maxIndex ? element.id : maxIndex;
+  }
+  return maxIndex + 1;
+}

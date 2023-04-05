@@ -18,18 +18,15 @@ bool allDifferent(List<Thought> thoughts) {
 void main() {
     group('Testing index function', () {
         List<Thought> thoughts = [];
-        // you don't have to use generateIndex() if you
-        // think of another way to implement it just change
-        // the tests accordingly
-        Thought thought1 = Thought(generateIndex(), DateTime(2022), 'first thought');
-        Thought thought2 = Thought(generateIndex(), DateTime(2021), 'second thought');
-        Thought thought3 = Thought(generateIndex(), DateTime(2021), 'third thought');
-        Thought thought4 = Thought(generateIndex(), DateTime(2021), 'fourth thought');
-        Thought thought5 = Thought(generateIndex(), DateTime(2021), 'fifth thought');
+        Thought thought1 = Thought(generateId(thoughts), DateTime(2022), 'first thought');
         thoughts.add(thought1);
+        Thought thought2 = Thought(generateId(thoughts), DateTime(2021), 'second thought');
         thoughts.add(thought2);
+        Thought thought3 = Thought(generateId(thoughts), DateTime(2021), 'third thought');
         thoughts.add(thought3);
+        Thought thought4 = Thought(generateId(thoughts), DateTime(2021), 'fourth thought');
         thoughts.add(thought4);
+        Thought thought5 = Thought(generateId(thoughts), DateTime(2021), 'fifth thought');
         thoughts.add(thought5);
 
         test('compare if two thoughts have different ids', () {
@@ -55,9 +52,9 @@ void main() {
             thoughts.removeAt(0);
             thoughts.removeAt(0);
             thoughts.removeAt(0);
-            thoughts.add(Thought(generateIndex(),  DateTime(2021), 'fifth thought'));
-            thoughts.add(Thought(generateIndex(),  DateTime(2021), 'seventh thought'));
-            thoughts.add(Thought(generateIndex(),  DateTime(2021), 'eighth thought'));
+            thoughts.add(Thought(generateId(thoughts),  DateTime(2021), 'fifth thought'));
+            thoughts.add(Thought(generateId(thoughts),  DateTime(2021), 'seventh thought'));
+            thoughts.add(Thought(generateId(thoughts),  DateTime(2021), 'eighth thought'));
             expect(allDifferent(thoughts), true);
         });
 
