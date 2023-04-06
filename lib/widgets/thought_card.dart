@@ -238,6 +238,7 @@ class _ThoughtCard extends State<ThoughtCard> {
           // When Enter is pressed.
           onSubmitted: (String value) {
             setState(() {
+              print(value);
               this.beingEdited = false;
               widget.submitThoughtTagEdit(widget.thought, value.split(" "));
             });

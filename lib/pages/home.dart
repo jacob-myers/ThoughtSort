@@ -78,7 +78,8 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
 
   void submitThoughtTagEdit (Thought thought, List<String> newTags) {
     setState(() {
-      Set<String> removeDuplicates = {...thought.tags, ...newTags};
+      Set<String> removeDuplicates = {...newTags};
+      removeDuplicates.remove(" ");
       thought.tags = removeDuplicates.toList();
     });
   }
