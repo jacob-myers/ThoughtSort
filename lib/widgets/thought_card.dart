@@ -37,7 +37,9 @@ class ThoughtCard extends StatefulWidget {
   final Thought thought;
   final int index;
   String? thoughtText;
+  String? tagText;
   final Function(Thought, String) submitThoughtEdit;
+  final Function(Thought, List<String> newTags) submitThoughtTagEdit;
   final Function() refresh;
   final Function(String, Thought) removeThoughtFromEverywhere;
 
@@ -46,6 +48,7 @@ class ThoughtCard extends StatefulWidget {
     required this.thought,
     required this.index,
     required this.submitThoughtEdit,
+    required this.submitThoughtTagEdit,
     required this.refresh,
     required this.removeThoughtFromEverywhere,
 
@@ -59,6 +62,7 @@ class _ThoughtCard extends State<ThoughtCard> {
   final textFieldController = TextEditingController();
   FocusNode focusNode = FocusNode();
   bool beingEdited = false;
+  bool beingEditedTags = false;
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +100,10 @@ class _ThoughtCard extends State<ThoughtCard> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        time,
-                        textDirection: ui.TextDirection.ltr,
-                        style: TextStyle(color: Colors.black.withOpacity(0.5)),
-                      ),
+                      buildTimeText(),
                       SizedBox(height: 4),
                       buildCardText(beingEdited),
+                      buildTagText(beingEditedTags)
                     ],
                   ),
                 ),
@@ -115,6 +116,20 @@ class _ThoughtCard extends State<ThoughtCard> {
                     icon: const Icon(Icons.delete),
                     onPressed: () {
                       widget.removeThoughtFromEverywhere('thoughts', widget.thought);
+                    },
+                  ),
+                ),
+                Directionality(
+                  textDirection: ui.TextDirection.ltr,
+                  child: IconButton(
+                    iconSize: 40,
+                    color: Colors.black,
+                    icon: const Icon(Icons.tag),
+                    onPressed: () {
+                      setState(() {
+                        beingEditedTags = true;
+                        focusNode.requestFocus();
+                      });
                     },
                   ),
                 )
@@ -182,6 +197,60 @@ class _ThoughtCard extends State<ThoughtCard> {
     );
   }
 
+  Widget buildTimeText() {
+    return Text(
+      DateFormat.yMMMd().format(widget.thought.date),
+      textDirection: ui.TextDirection.ltr,
+      style: TextStyle(color: Colors.black.withOpacity(0.5)),
+
+    );
+  }
+
+  Widget buildTagText(bool beingEdited) {
+    var tagText = widget.thought.tagsToString.substring(1).replaceAll("%", " ");
+    if (beingEdited) {
+      //print('rebuilding');
+      return Focus(
+        onFocusChange: (value) {
+          if (!value) {
+            this.beingEdited = false;
+            widget.submitThoughtTagEdit( widget.thought, widget.thought.tags);
+          }
+        },
+        child: TextField(
+          style: TextStyle(color: Colors.black.withOpacity(0.5)),
+          controller: TextEditingController(text: tagText),
+          focusNode: focusNode,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          maxLines: null,
+          onChanged: (value) => widget.tagText = value,
+
+          // Styling.
+          decoration: const InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent, width: 2)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.transparent, width: 2)),
+            hintText: 'Add tags!',
+          ),
+
+          // When Enter is pressed.
+          onSubmitted: (String value) {
+            setState(() {
+              this.beingEdited = false;
+              widget.submitThoughtTagEdit(widget.thought, value.split(" "));
+            });
+          },
+        ),
+      );
+    }
+    return Text(
+      tagText,
+      textDirection: ui.TextDirection.ltr,
+      style: TextStyle(color: Colors.black.withOpacity(0.5)),
+    );
+  }
   /// To return different height for different widgets
   double getMinHeight(int index) {
     switch (index % 4) {

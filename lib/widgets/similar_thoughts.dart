@@ -8,6 +8,7 @@ import 'package:thought_sort/widgets/thought_card.dart';
 class SimilarThoughts extends StatefulWidget {
   final List<Thought> thoughts;
   final Function(Thought, String) submitThoughtEdit;
+  final Function(Thought, List<String> newTags) submitThoughtTagEdit;
   final Function() refresh;
   final Function(String, Thought) removeThoughtFromEverywhere;
 
@@ -15,6 +16,7 @@ class SimilarThoughts extends StatefulWidget {
     super.key,
     required this.thoughts,
     required this.submitThoughtEdit,
+    required this.submitThoughtTagEdit,
     required this.refresh, required this.removeThoughtFromEverywhere,
   });
 
@@ -42,6 +44,7 @@ class _SimilarThoughts extends State<SimilarThoughts> {
                 thought: thought,
                 index: index,
                 submitThoughtEdit: widget.submitThoughtEdit,
+                submitThoughtTagEdit: widget.submitThoughtTagEdit,
                 refresh: widget.refresh,
                 removeThoughtFromEverywhere: widget.removeThoughtFromEverywhere,
               ),

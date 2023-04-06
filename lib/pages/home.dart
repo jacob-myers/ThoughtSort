@@ -76,6 +76,13 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
     });
   }
 
+  void submitThoughtTagEdit (Thought thought, List<String> newTags) {
+    setState(() {
+      Set<String> removeDuplicates = {...thought.tags, ...newTags};
+      thought.tags = removeDuplicates.toList();
+    });
+  }
+
   void updateSearch(String searchTerm) {
     setState(() {
       this.searchTerm = searchTerm;
@@ -151,6 +158,7 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                   SimilarThoughts(
                     thoughts: searchIndex.search(searchTerm),
                     submitThoughtEdit: submitThoughtEdit,
+                    submitThoughtTagEdit: submitThoughtTagEdit,
                     refresh: refreshThoughts,
                     removeThoughtFromEverywhere: removeThoughtFromEverywhere,
                   ),
