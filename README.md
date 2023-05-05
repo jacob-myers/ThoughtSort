@@ -2,11 +2,12 @@
 # ThoughtSort
 
 ## Contributors
-- Jacob Myers  
-- Raymond Zheng
+
 - Isaac Jones
 - William Kloppenberg
 - Julien Marcuse (Redempt)
+- Jacob Myers  
+- Raymond Zheng
 
 ## Project
 ThoughtSort is an application for recording your thoughts or taking notes. It has a simple, easy interface. It is extraordinarily responsive for creating, editing, and searching your thoughts. 
