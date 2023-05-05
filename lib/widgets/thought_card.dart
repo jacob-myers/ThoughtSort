@@ -8,29 +8,35 @@ import '../classes/persistence.dart';
 
 final _lightColors = [
   LinearGradient(
-      colors: [Color.fromARGB(255, 255, 243, 117), Colors.amber.shade300],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter),
-  LinearGradient(colors: [
-    Color.fromARGB(255, 193, 255, 106),
-    Color.fromARGB(255, 125, 229, 96)
-  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+    colors: [Color.fromARGB(255, 255, 243, 117), Colors.amber.shade300],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+  ),
   LinearGradient(
-      colors: [Color.fromARGB(255, 101, 247, 252), Colors.lightBlue.shade300],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter),
-  LinearGradient(colors: [
-    Color.fromARGB(255, 255, 222, 77),
-    Color.fromARGB(255, 255, 168, 69)
-  ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+    colors: [Color.fromARGB(255, 193, 255, 106), Color.fromARGB(255, 125, 229, 96)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  ),
   LinearGradient(
-      colors: [Color.fromARGB(255, 253, 148, 202), Colors.pink.shade300],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter),
+    colors: [Color.fromARGB(255, 101, 247, 252), Colors.lightBlue.shade300],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+  ),
   LinearGradient(
-      colors: [Color.fromARGB(255, 93, 229, 202), Colors.teal.shade300],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter),
+    colors: [Color.fromARGB(255, 255, 222, 77), Color.fromARGB(255, 255, 168, 69)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+  ),
+  LinearGradient(
+    colors: [Color.fromARGB(255, 253, 148, 202), Colors.pink.shade300],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+  ),
+  LinearGradient(
+    colors: [Color.fromARGB(255, 93, 229, 202), Colors.teal.shade300],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter
+  ),
 ];
 
 class ThoughtCard extends StatefulWidget {
@@ -63,12 +69,11 @@ class _ThoughtCard extends State<ThoughtCard> {
   @override
   Widget build(BuildContext context) {
     /// Pick colors from the accent colors based on index
-    final gradient = _lightColors[widget.index % _lightColors.length];
+    final gradient = CustomStyle.cardColors[widget.thought.id % CustomStyle.cardColors.length];
     final time = DateFormat.yMMMd().format(widget.thought.date);
     final minHeight = getMinHeight(widget.index);
 
     return Card(
-
       child: GestureDetector(
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
@@ -109,14 +114,20 @@ class _ThoughtCard extends State<ThoughtCard> {
 
                 Directionality(
                   textDirection: ui.TextDirection.ltr,
-                  child: IconButton(
-                    iconSize: 40,
-                    color: Colors.black,
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
+
+                  child: InkWell(
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: Icon(
+                        Icons.delete_forever,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    onTap: () {
                       widget.removeThoughtFromEverywhere('thoughts', widget.thought);
                     },
-                  ),
+                  )
                 )
               ],
             )
@@ -134,7 +145,6 @@ class _ThoughtCard extends State<ThoughtCard> {
 
   Widget buildCardText(bool beingEdited) {
     if (beingEdited) {
-      //print('rebuilding');
       return Focus(
         onFocusChange: (value) {
           if (!value) {
@@ -155,9 +165,9 @@ class _ThoughtCard extends State<ThoughtCard> {
           // Styling.
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent, width: 2)),
+                borderSide: BorderSide(color: Colors.transparent)),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent, width: 2)),
+                borderSide: BorderSide(color: Colors.transparent)),
             hintText: 'Make a new thought?',
           ),
 

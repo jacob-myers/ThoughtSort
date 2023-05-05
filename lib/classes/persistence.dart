@@ -23,6 +23,13 @@ class Thought implements Comparable {
     }
   ): tags = tags ?? [];
 
+  static List<Thought> sortThoughtsByDate(List<Thought> thoughts, {bool newToOld = true}) {
+    // Deep copies so it doesn't change original.
+    List<Thought> newList = [...thoughts];
+    newList.sort();
+    return newList.reversed.toList();
+  }
+
   void addTag(String tag) {
     if (tag.contains('%')) {
       return;
@@ -66,7 +73,6 @@ class Thought implements Comparable {
     } else {
       return -1;
     }
-
   }
 
   @override
@@ -145,8 +151,8 @@ void removeThought(String filename, Thought thought) {
   saveThoughts(filename, thoughts);
 }
 
-int generateIndex(List<Thought> thoughts) {
-  int maxIndex = 0;
+int generateId(List<Thought> thoughts) {
+  int maxIndex = -1;
   for (var element in thoughts) {
     maxIndex = element.id > maxIndex ? element.id : maxIndex;
   }

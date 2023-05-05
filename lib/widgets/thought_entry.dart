@@ -3,15 +3,16 @@ import '../classes/persistence.dart';
 
 // Widget allows user to enter their thoughts and add to thought library.
 class ThoughtEntry extends StatefulWidget {
-  final Thought? thought;
   final Function(int, String) addThought;
   final Function(String) updateSearch;
+  final List<Thought> thoughts;
 
-  ThoughtEntry(
-      {super.key,
-      this.thought,
-      required this.addThought,
-      required this.updateSearch});
+  ThoughtEntry({
+    super.key,
+    required this.thoughts,
+    required this.addThought,
+    required this.updateSearch
+  });
 
   @override
   State<ThoughtEntry> createState() => _ThoughtEntry();
@@ -54,10 +55,11 @@ class _ThoughtEntry extends State<ThoughtEntry> {
 
               // When Enter is pressed.
               onSubmitted: (String value) {
-                widget.addThought(id, value);
-                // Clears the TextField.
-                textFieldController.clear();
-                widget.updateSearch("");
+                if (value != '') {
+                  widget.addThought(generateId(widget.thoughts), value);
+                  textFieldController.clear();
+                  widget.updateSearch("");
+                }
                 focusNode.requestFocus();
               },
               onChanged: widget.updateSearch,

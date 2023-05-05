@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:thought_sort/classes/search.dart';
-import 'package:thought_sort/widgets/thought_card.dart';
-import 'package:thought_sort/widgets/thought_library.dart';
 import 'package:window_size/window_size.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
-// Widgets.
+// Local
+import 'package:thought_sort/classes/search.dart';
+import 'package:thought_sort/classes/persistence.dart';
 import 'package:thought_sort/widgets/thought_entry.dart';
 import 'package:thought_sort/widgets/similar_thoughts.dart';
-
-import '../classes/persistence.dart';
+import 'package:thought_sort/widgets/WindowButtons.dart';
 
 class ThoughtSortHome extends StatefulWidget {
   const ThoughtSortHome({super.key, required this.title, required this.toggleTheme});
@@ -23,17 +21,9 @@ class ThoughtSortHome extends StatefulWidget {
 }
 
 class _ThoughtSortHome extends State<ThoughtSortHome> {
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method.
-    });
-  }
-
   late List<Thought> thoughts;
   late ThoughtSearch searchIndex;
   String searchTerm = "";
-  //bool isThought = false;
 
   @override
   void initState() {
@@ -126,8 +116,9 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                   Row(
                     children: [
                       Expanded(child: ThoughtEntry(
-                          addThought: addThought,
-                          updateSearch: updateSearch
+                        thoughts: thoughts,
+                        addThought: addThought,
+                        updateSearch: updateSearch
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -155,48 +146,23 @@ class _ThoughtSortHome extends State<ThoughtSortHome> {
                     removeThoughtFromEverywhere: removeThoughtFromEverywhere,
                   ),
 
-
-                  SizedBox(height: 5,),
+                  /*
+                  // Toggle theme button.
+                  SizedBox(height: 5),
                   ElevatedButton (
                     onPressed: () {
                       widget.toggleTheme();
                     },
                     child: Text("Toggle Theme"),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(height: 5),
+                  */
                 ],
               ),
             ),
           ],
         )
       ),
-    );
-  }
-}
-
-var buttonColors = WindowButtonColors(
-  iconNormal: const Color (0xFFd8d4c0),
-  mouseOver: const Color (0xFF202123),
-  iconMouseOver: const Color (0xFF3271cc),
-
-);
-
-var closeColors = WindowButtonColors(
-  iconNormal: const Color (0xFFd8d4c0),
-  mouseOver: const Color (0xFF5b4142),
-  iconMouseOver: const Color (0xFFf43f00),
-
-);
-
-class WindowButtons extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        MinimizeWindowButton(colors: buttonColors),
-        MaximizeWindowButton(colors: buttonColors),
-        CloseWindowButton(colors: closeColors)
-      ],
     );
   }
 }

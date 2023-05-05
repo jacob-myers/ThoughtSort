@@ -35,7 +35,7 @@ class _SimilarThoughts extends State<SimilarThoughts> {
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
           itemBuilder: (context, index) {
-            final thought = widget.thoughts[index];
+            Thought thought = Thought.sortThoughtsByDate(widget.thoughts)[index];
 
             return GestureDetector(
               child: ThoughtCard(
@@ -49,27 +49,5 @@ class _SimilarThoughts extends State<SimilarThoughts> {
           },
         )
     );
-
-
-    /*
-    // Old method with ListView.
-    Expanded(
-      child: Column(
-        children: [
-          Text('Similar thoughts', style: CustomStyle.headers),
-          Expanded(
-              child: ListView(
-                children: List.generate(widget.thoughts.length, (index) {
-                  return GestureDetector(
-                      child:
-                          ThoughtCard(thought: widget.thoughts[index], index: index));
-                }
-              ),
-            )
-          )
-        ],
-      )
-    );
-    */
   }
 }
